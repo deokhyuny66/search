@@ -1,0 +1,17 @@
+#tableForm_length .form-control {
+ 	height: 40px !important;
+ }
+ 
+.row {
+    --bs-gutter-x: 0;
+}
+
+#tableForm_paginate .pagination {
+	margin: 15px 15px !important;
+	display: inline-table;
+}
+
+.form-label {
+	margin-bottom: 0px !important;
+	margin-top: 10px;
+}
