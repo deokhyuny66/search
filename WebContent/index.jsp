@@ -41,8 +41,9 @@
 
 body {
 	background: linear-gradient(to left, #FF00C7 0%,#00c7ff 100%);
+	-ms-overflow-style: none;
 }
-/* //card mb-3 */
+::-webkit-scrollbar { display: none; }
 
 #container {
 	width: 350px;
@@ -54,7 +55,10 @@ body {
 	background: #fff;
 	top:calc(50% - 300px);
 	left:calc(50% - 175px);
+	-ms-overflow-style: none;
 }
+
+#container::-webkit-scrollbar{ display:none; }
 
 #header {
 	background: #35394A;
@@ -295,13 +299,8 @@ input.addEventListener('focus', function(){
 	for (var i = 0; i < element.length; i++) {
 		element[i].classList.add('focus' + i);
 	}
+	$("#container").css("overflow-y","scroll");
 }, false);
-
-/* input.addEventListener('blur', function(){
-	for (var i = 0; i < element.length; i++) {
-	element[i].classList.remove('focus'+ i);
-	}
-}, false); */
 
 input.addEventListener('keyup', function(){
 	if (results.childNodes.length === 0) {
@@ -349,6 +348,7 @@ $(".searchInput").on("propertychange change keyup paste input", function () {
   // 변화에 바로바로 반응하면 부하가 걸릴 수 있어서 1초 딜레이를 준다.
   setTimeout(function () {
     // 변경된 현재 박스 값을 받아온다.
+    
     var currentVal = $(".searchInput").val();
     if (currentVal == oldVal) {
       return;
