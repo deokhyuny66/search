@@ -219,16 +219,100 @@ body {
 
 .card {
    box-shadow: 0 2px 6px 0 rgb(67 89 113 / 12%);
-   border-radius: 0.5rem;
+   border-radius: 0.7rem;
    text-align: center;
 }
 
 .mb-3 {
     margin-bottom: 1rem !important;
-    padding-top: 3px;;
-    padding-bottom: 3px;
+    padding-top: 1px;;
+    padding-bottom: 1px;
 }
 
+
+/* root color */
+.bs-blue {
+background:#007bff;
+}
+.bs-indigo {
+background:#6610f2;
+}
+
+.bs-purple {
+ background:#696cff;
+}
+.bs-pink{
+background:#e83e8c;
+} 
+.bs-red{
+background:#ff3e1d;
+} 
+.bs-orange {
+ background:#fd7e14;
+}
+.bs-yellow {
+ background:#ffab00;
+}
+.bs-green {
+background:#71dd37;
+}
+.bs-teal {
+background:#20c997;
+}
+.bs-cyan {
+background:#03c3ec;
+}
+.bs-white {
+background:#fff;
+}
+.bs-gray {
+background:rgba(67, 89, 113, 0.6);
+}
+.bs-gray-dark {
+background:rgba(67, 89, 113, 0.8);
+}
+.bs-gray-25 {
+background:rgba(67, 89, 113, 0.025);
+}
+.bs-gray-50 {
+background:rgba(67, 89, 113, 0.05);
+}
+.bs-primary {
+background:#696cff;
+}
+.bs-secondary {
+background:#8592a3;
+}
+.bs-success {
+background:#71dd37;
+}
+.bs-info {
+background:#03c3ec;
+}
+.bs-warning {
+background:#ffab00;
+}
+.bs-danger {
+background:ff3e1d;
+}
+.bs-light {
+background:#fcfdfd;
+}
+.bs-dark {
+background:#233446;
+}
+
+#card-block {
+ 	display: flex;
+}
+#card-block > div {
+	padding: 10px;
+}
+#card-block .card-sub-block {
+	display: inline-block;
+	width:100%;
+	text-align:left;
+}
 
 </style>
 </head>
@@ -258,27 +342,60 @@ body {
 		</div>
 	</div>
 
-	<div class="row mb-5">
+<%-- 	<div class="row mb-5">
         <div id="results" class="col-md-6 col-lg-4">
            <% for (j=0;j<rs_dao_list.size();j++) {%>
-             <div class="item card mb-3">
+           <div class="item card mb-3 bs-light">
+
 	             <% for(Entry<String, String> elem : rs_dao_list.get(j).entrySet() ){%>
-					 <% if(!elem.getKey().equals("id") && !elem.getKey().equals("type") ){ %>
-	                 <div class="card-body">
-	                   <% if(elem.getKey().equals("company")){ %>
-	                   	<h2 class="card-title"><%= elem.getValue() %></h2>
-	                   <%}else{%>
-	                   	<h4 class="card-title"><%= elem.getValue() %></h4>
-	                   <%}%>	
-	                 </div>
+					 <% if(!elem.getKey().equals("id") && !elem.getKey().equals("type") && !elem.getKey().equals("phone")){ %>
+
+		                 <div class="card-body">
+		                 	<% if(elem.getKey().equals("company")){ %>
+			                   	<div class="card-title text-white" style="padding-left:20px;padding-right:23px;"><h2><%= elem.getValue() %> <span style="text-aling:center;">
+			                   		<img alt="" src="./assets/img/phoneImg01.png" style="width:23px;height:30px;float: right;"></span></h2></div>
+			                   <%}else if(elem.getKey().equals("address")){%>
+			                   	<div id="address<%=j%>" class="card-title text-white" style="padding-left:20px;padding-right:20px;" 
+			                   		onclick="copy3('address<%=j%>')"><h4><img alt="" src="./assets/img/copy.png" 
+			                   			style="width:20px;height:20px;"><%= elem.getValue() %></h4></div>
+			                   <%}else{%>
+			                   	<div class="card-title bg-primary text-white"><h4><%= elem.getValue() %></h4></div>
+			                 <%}%>
+		                 </div>
+		                 
 	               <%}%>
 	             <%}%>
              </div>
              <%}%>
         </div>
-	</div> 
+	</div>  --%>
+	
+	<div class="row mb-5">
+        <div id="results" class="col-md-6 col-lg-4">
+    
+        <% for (j=0;j<rs_dao_list.size();j++) {%>
+           <div class="item card mb-3 bs-light">
+           	
+           	 
+	             <div id="card-block" class="card-body"> 
+	                  	<div class="card-title text-white" style="margin:auto 0;line-height: 50px;"><img src="./assets/img/logos.png" style="width:40px;height:60px;"></div>
 
+	                  	<div class="card-sub-block">
+		                  		<div class="card-title text-white"><h3><%= rs_dao_list.get(j).get("company") %></h3></div>
+		                  		<div id="address" class="card-title text-white" onclick="copy3('address')"><h5><%= rs_dao_list.get(j).get("address") %>
+		                  		<img src="./assets/img/copy.png" style="width:20px;height:15px;"></h5></div>
+	                  	</div>
+             	 </div> 
+             	 
+ 
+           </div> 
+	    <%}%>
+	    
+        </div>
+	</div> 
+	
 	<div id="header"></div>
+	
 </div>      
 
 		
@@ -378,6 +495,23 @@ $(".searchInput").on("propertychange change keyup paste input", function () {
     });
   }, 1000);
 });
+
+var address;
+function copy3(address) {
+	var obj = document.getElementById(address);
+	var range = document.createRange();
+	range.selectNode(obj.childNodes[0]); //텍스트 정보를 Range 객체에 저장
+	//range.setStart(obj.childNodes[0], 0); //추가
+	//range.setEnd(obj.childNodes[0], 5); //추가
+	var sel = window.getSelection();
+	sel.removeAllRanges(); //기존 선택정보 삭제
+	sel.addRange(range); //텍스트 정보 선택
+	document.execCommand("copy"); //복사
+	sel.removeRange(range); //선택 정보 삭제
+	alert("주소가 복사 되었습니다.");
+}
+
+
 </script>
 </body>
 </html>
