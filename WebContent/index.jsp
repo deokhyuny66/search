@@ -17,6 +17,7 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Insert title here</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- Favicon -->
@@ -38,7 +39,8 @@
 
 <style>
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic);
-
+@import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 body {
 	background: linear-gradient(to left, #FF00C7 0%,#00c7ff 100%);
 	-ms-overflow-style: none;
@@ -229,106 +231,33 @@ body {
     padding-bottom: 1px;
 }
 
-
-/* root color */
-.bs-blue {
-background:#007bff;
-}
-.bs-indigo {
-background:#6610f2;
-}
-
-.bs-purple {
- background:#696cff;
-}
-.bs-pink{
-background:#e83e8c;
-} 
-.bs-red{
-background:#ff3e1d;
-} 
-.bs-orange {
- background:#fd7e14;
-}
-.bs-yellow {
- background:#ffab00;
-}
-.bs-green {
-background:#71dd37;
-}
-.bs-teal {
-background:#20c997;
-}
-.bs-cyan {
-background:#03c3ec;
-}
-.bs-white {
-background:#fff;
-}
-.bs-gray {
-background:rgba(67, 89, 113, 0.6);
-}
-.bs-gray-dark {
-background:rgba(67, 89, 113, 0.8);
-}
-.bs-gray-25 {
-background:rgba(67, 89, 113, 0.025);
-}
-.bs-gray-50 {
-background:rgba(67, 89, 113, 0.05);
-}
-.bs-primary {
-background:#696cff;
-}
-.bs-secondary {
-background:#8592a3;
-}
-.bs-success {
-background:#71dd37;
-}
-.bs-info {
-background:#03c3ec;
-}
-.bs-warning {
-background:#ffab00;
-}
-.bs-danger {
-background:ff3e1d;
-}
 .bs-light {
 background:#fcfdfd;
-}
-.bs-dark {
-background:#233446;
 }
 
 #card-block {
  	display: flex;
 }
 #card-block > div {
-	padding: 10px;
+	padding: 5px;
 }
 #card-block .card-sub-block {
 	display: inline-block;
 	width:100%;
 	text-align:left;
+	font-family: 'IBM Plex Sans KR', sans-serif;
+	font-size:14px;
 }
+#card-block .card-sub-block > div:FIRST-CHILD {
+	font-size:23px;
+	font-family: 'Do Hyeon', sans-serif;
+    text-transform: uppercase;
+}
+
 
 </style>
 </head>
 <body>
-
-<!--
-<ul class="menu-inner py-1">
-	<li class="menu-item">
-       <a href="ui-list-groups.html" class="menu-link">
-         <div data-i18n="List Groups">List groups</div>
-       </a>
-     </li>
-</ul>
-
-  -->
-
 
 <div id="container">
 	<div id="logo">
@@ -342,52 +271,25 @@ background:#233446;
 		</div>
 	</div>
 
-<%-- 	<div class="row mb-5">
-        <div id="results" class="col-md-6 col-lg-4">
-           <% for (j=0;j<rs_dao_list.size();j++) {%>
-           <div class="item card mb-3 bs-light">
-
-	             <% for(Entry<String, String> elem : rs_dao_list.get(j).entrySet() ){%>
-					 <% if(!elem.getKey().equals("id") && !elem.getKey().equals("type") && !elem.getKey().equals("phone")){ %>
-
-		                 <div class="card-body">
-		                 	<% if(elem.getKey().equals("company")){ %>
-			                   	<div class="card-title text-white" style="padding-left:20px;padding-right:23px;"><h2><%= elem.getValue() %> <span style="text-aling:center;">
-			                   		<img alt="" src="./assets/img/phoneImg01.png" style="width:23px;height:30px;float: right;"></span></h2></div>
-			                   <%}else if(elem.getKey().equals("address")){%>
-			                   	<div id="address<%=j%>" class="card-title text-white" style="padding-left:20px;padding-right:20px;" 
-			                   		onclick="copy3('address<%=j%>')"><h4><img alt="" src="./assets/img/copy.png" 
-			                   			style="width:20px;height:20px;"><%= elem.getValue() %></h4></div>
-			                   <%}else{%>
-			                   	<div class="card-title bg-primary text-white"><h4><%= elem.getValue() %></h4></div>
-			                 <%}%>
-		                 </div>
-		                 
-	               <%}%>
-	             <%}%>
-             </div>
-             <%}%>
-        </div>
-	</div>  --%>
-	
 	<div class="row mb-5">
         <div id="results" class="col-md-6 col-lg-4">
     
         <% for (j=0;j<rs_dao_list.size();j++) {%>
            <div class="item card mb-3 bs-light">
            	
-           	 
 	             <div id="card-block" class="card-body"> 
-	                  	<div class="card-title text-white" style="margin:auto 0;line-height: 50px;"><img src="./assets/img/logos.png" style="width:40px;height:60px;"></div>
+	                  	<div class="card-title text-white" style="margin:auto 0;line-height: 50px;">
+	                  		<a href="https://www.naver.com"><img src="./assets/img/logos6.png" style="cursor: pointer;max-width:80px; width:80%; height:auto;"></a></div>
 
 	                  	<div class="card-sub-block">
-		                  		<div class="card-title text-white"><h3><%= rs_dao_list.get(j).get("company") %></h3></div>
-		                  		<div id="address" class="card-title text-white" onclick="copy3('address')"><h5><%= rs_dao_list.get(j).get("address") %>
-		                  		<img src="./assets/img/copy.png" style="width:20px;height:15px;"></h5></div>
+		                  		<div class="card-title text-white"><%= rs_dao_list.get(j).get("company") %>
+		                  				<img src="./assets/img/phone-connection.png" onclick="document.location.href='tel:<%= rs_dao_list.get(j).get("phone") %>'" 
+		                  						style="float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;"></div>
+		                  		<div id="address<%=j%>" class="card-title text-white" onclick="copy3('address<%=j%>')" style="cursor: pointer;padding-top:8px;"><%= rs_dao_list.get(j).get("address") %>
+		                  		<img src="./assets/img/contents-copy.png" style="width:20px;height:15px;"></div>
 	                  	</div>
              	 </div> 
-             	 
- 
+
            </div> 
 	    <%}%>
 	    
