@@ -33,7 +33,7 @@ public class actionDAO {
     		while(rs.next()) {
     			HashMap<String,String> row = new HashMap<String, String>(columns);
     			for(int i=1; i<=columns; ++i ) { //++i	
-    				if(md.getColumnName(i).equals("id")){
+    				if(md.getColumnName(i).equals("UNIT_ID")){
     					row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
     				}else {
     					row.put(md.getColumnName(i), (String) rs.getObject(i));
@@ -41,7 +41,6 @@ public class actionDAO {
 		        }
     			list.add(row);
     		}
-    		System.out.println(list);
 
     	} catch (Exception e) {
     		e.printStackTrace();

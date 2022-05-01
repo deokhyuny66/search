@@ -22,7 +22,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<!-- Favicon -->
     <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
-
+	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -36,11 +36,11 @@
 
     <script src="./assets/js/config.js"></script>
 
-
 <style>
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,100italic,300,300italic,400italic,500,500italic,700,700italic,900,900italic);
 @import url('https://fonts.googleapis.com/css2?family=Do+Hyeon&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&display=swap');
 body {
 	background: linear-gradient(to left, #FF00C7 0%,#00c7ff 100%);
 	-ms-overflow-style: none;
@@ -246,32 +246,74 @@ background:#fcfdfd;
 	width:100%;
 	text-align:left;
 	font-family: 'IBM Plex Sans KR', sans-serif;
-	font-size:14px;
+	font-size:13px;
 }
 #card-block .card-sub-block > div:FIRST-CHILD {
-	font-size:23px;
-	font-family: 'Do Hyeon', sans-serif;
+	padding-top: 10px;
+	font-size:20px;
+	font-family: 'Nanum Gothic Coding', monospace;
     text-transform: uppercase;
 }
 
 
+/* Top Scroll */
+#back-to-top {
+  display: inline-block;
+  background-color: #3fa3e3;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  border-radius: 4px;
+  position: fixed;
+  bottom: 50px;
+  right: 30px;
+  transition: background-color .3s, 
+    opacity .5s, visibility .5s;
+  opacity: 0;
+  visibility: hidden;
+  z-index: 1000;
+}
+#back-to-top::after {
+  content: "\f077";
+  font-family: FontAwesome;
+  font-weight: normal;
+  font-style: normal;
+  font-size: 2em;
+  line-height: 40px;
+  color: #fff;
+}
+#back-to-top:hover {
+  cursor: pointer;
+  background-color: #333;
+}
+#back-to-top:active {
+  background-color: #555;
+}
+#back-to-top.show {
+  opacity: 1;
+  visibility: visible;
+}
+
 </style>
+
 </head>
 <body>
-
 <div id="container">
+
 	<div id="logo">
 		<p>Coolinic<span> Search</span></p>
 	</div>
 	
 	<div id="continput">
+		<a id="back-to-top"></a>
 		<div id="input-group">
 			<input type="text" id="searchtext" class="searchInput">
 			<button id="icon-src"><i class="fa fa-search" aria-hidden="true"></i></button>
 		</div>
 	</div>
-
+	
 	<div class="row mb-5">
+		
         <div id="results" class="col-md-6 col-lg-4">
     
         <% for (j=0;j<rs_dao_list.size();j++) {%>
@@ -280,13 +322,13 @@ background:#fcfdfd;
 	             <div id="card-block" class="card-body"> 
 	                  	<div class="card-title text-white" style="margin:auto 0;line-height: 50px;">
 	                  		<a href="https://www.naver.com"><img src="./assets/img/logos6.png" style="cursor: pointer;max-width:80px; width:80%; height:auto;"></a></div>
-
 	                  	<div class="card-sub-block">
-		                  		<div class="card-title text-white"><%= rs_dao_list.get(j).get("company") %>
-		                  				<img src="./assets/img/phone-connection.png" onclick="document.location.href='tel:<%= rs_dao_list.get(j).get("phone") %>'" 
-		                  						style="float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;"></div>
-		                  		<div id="address<%=j%>" class="card-title text-white" onclick="copy3('address<%=j%>')" style="cursor: pointer;padding-top:8px;"><%= rs_dao_list.get(j).get("address") %>
-		                  		<img src="./assets/img/contents-copy.png" style="width:20px;height:15px;"></div>
+		                  		<div class="card-title text-white"><%= rs_dao_list.get(j).get("UNIT_COMPANY") %>
+	                  				<img src="./assets/img/phone-connection.png" onclick="document.location.href='tel:<%= rs_dao_list.get(j).get("UNIT_PHONE") %>'" 
+	                  						style="float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;"></div>
+	                  						
+		                  		<div id="address<%=j%>" class="card-title text-white" onclick="copy3('address<%=j%>')" style="cursor: pointer;padding-top:10px;"><%= rs_dao_list.get(j).get("UNIT_ADDRESS") %>
+	                  				<img src="./assets/img/contents-copy.png" style="width:20px;height:15px;"></div>
 	                  	</div>
              	 </div> 
 
@@ -310,15 +352,30 @@ var logo = document.getElementById('logo');
 var results = document.getElementById('results');
 var redBg = document.getElementById('header');
 
+/*  View Animation */
 var element = [redBg, contInput, gInput, button, logo, results];
 //원래의 인풋 박스 값을 받는다.
 var oldVal = $(".searchInput");
 
 input.addEventListener('focus', function(){
+	$("#container").css("overflow-y","scroll");
 	for (var i = 0; i < element.length; i++) {
 		element[i].classList.add('focus' + i);
 	}
-	$("#container").css("overflow-y","scroll");
+	
+	/* Top Scroll */
+	$('#back-to-top').on('click',function(e){
+	     e.preventDefault();
+	     $('#container').animate({scrollTop:0},600);
+	});
+	$("#container").scroll(function() {
+		if ($("#container").scrollTop() > 100) {
+	      $('#back-to-top').addClass('show');
+	    } else {
+	      $('#back-to-top').removeClass('show');
+	    }
+	});
+	
 }, false);
 
 input.addEventListener('keyup', function(){
@@ -361,7 +418,7 @@ function getAutoCompleteValues(val) {
   });
 }
 
-
+/* Filter Search  */
 /* 검색 내용 변경 감지 */
 $(".searchInput").on("propertychange change keyup paste input", function () {
   // 변화에 바로바로 반응하면 부하가 걸릴 수 있어서 1초 딜레이를 준다.
@@ -398,6 +455,8 @@ $(".searchInput").on("propertychange change keyup paste input", function () {
   }, 1000);
 });
 
+
+/*  Contents Copy */
 var address;
 function copy3(address) {
 	var obj = document.getElementById(address);
@@ -412,7 +471,6 @@ function copy3(address) {
 	sel.removeRange(range); //선택 정보 삭제
 	alert("주소가 복사 되었습니다.");
 }
-
 
 </script>
 </body>
