@@ -257,23 +257,27 @@ background:#fcfdfd;
 
 
 /* Top Scroll */
-#back-to-top {
+.back-to-top {
   display: inline-block;
   background-color: #3fa3e3;
   width: 40px;
   height: 40px;
   text-align: center;
   border-radius: 4px;
+  
+  /*  특정 영역 안에서 Fixed로 엘리먼트 고정 시키기 */
   position: fixed;
-  bottom: 50px;
-  right: 30px;
+  bottom:calc(50% - 280px);
+  right:calc(50% - 150px);
+  
+  box-shadow:0 0 6px gray; 
   transition: background-color .3s, 
     opacity .5s, visibility .5s;
   opacity: 0;
   visibility: hidden;
   z-index: 1000;
 }
-#back-to-top::after {
+.back-to-top::after {
   content: "\f077";
   font-family: FontAwesome;
   font-weight: normal;
@@ -282,14 +286,7 @@ background:#fcfdfd;
   line-height: 40px;
   color: #fff;
 }
-#back-to-top:hover {
-  cursor: pointer;
-  background-color: #333;
-}
-#back-to-top:active {
-  background-color: #555;
-}
-#back-to-top.show {
+.back-to-top.show {
   opacity: 1;
   visibility: visible;
 }
@@ -305,7 +302,7 @@ background:#fcfdfd;
 	</div>
 	
 	<div id="continput">
-		<a id="back-to-top"></a>
+		<a class="back-to-top"></a>
 		<div id="input-group">
 			<input type="text" id="searchtext" class="searchInput">
 			<button id="icon-src"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -364,15 +361,15 @@ input.addEventListener('focus', function(){
 	}
 	
 	/* Top Scroll */
-	$('#back-to-top').on('click',function(e){
+	$('.back-to-top').on('click',function(e){
 	     e.preventDefault();
 	     $('#container').animate({scrollTop:0},600);
 	});
 	$("#container").scroll(function() {
 		if ($("#container").scrollTop() > 100) {
-	      $('#back-to-top').addClass('show');
+	      $('.back-to-top').addClass('show');
 	    } else {
-	      $('#back-to-top').removeClass('show');
+	      $('.back-to-top').removeClass('show');
 	    }
 	});
 	
