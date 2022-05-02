@@ -42,7 +42,7 @@
 @import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Nanum+Gothic+Coding:wght@700&display=swap');
 body {
-	background: linear-gradient(to left, #FF00C7 0%,#00c7ff 100%);
+
 	-ms-overflow-style: none;
 }
 ::-webkit-scrollbar { display: none; }
@@ -318,7 +318,7 @@ background:#fcfdfd;
            	
 	             <div id="card-block" class="card-body"> 
 	                  	<div class="card-title text-white" style="margin:auto 0;line-height: 50px;">
-	                  		<a href="https://www.naver.com"><img src="./assets/img/logos6.png" style="cursor: pointer;max-width:80px; width:80%; height:auto;"></a></div>
+	                  		<a href="#"><img src="./assets/img/location.png" style="cursor: pointer;max-width:80px; width:80%; height:auto;"></a></div>
 	                  	<div class="card-sub-block">
 		                  		<div class="card-title text-white"><%= rs_dao_list.get(j).get("UNIT_COMPANY") %>
 	                  				<img src="./assets/img/phone-connection.png" onclick="document.location.href='tel:<%= rs_dao_list.get(j).get("UNIT_PHONE") %>'" 
