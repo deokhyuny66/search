@@ -48,7 +48,7 @@
 		<a class="back-to-top fas fa-angle-up"></a>
 		<div id="input-group">
 			<input type="text" id="searchtext" class="searchInput">
-			<button id="icon-src"><i class="fa fa-search" aria-hidden="true"></i></button>
+			<button id="icon-src"><i class="fas fa-search"></i></button>
 		</div>
 	</div>
 	
