@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?><project-modules id="moduleCoreId" project-version="1.5.0">
-    <wb-module deploy-name="SearchPJ">
+    <wb-module deploy-name="search">
         <wb-resource deploy-path="/" source-path="/WebContent" tag="defaultRootSource"/>
         <wb-resource deploy-path="/WEB-INF/classes" source-path="/src"/>
-        <property name="context-root" value="SearchPJ"/>
-        <property name="java-output-path" value="/SearchPJ/build/classes"/>
+        <property name="java-output-path" value="/search/build/classes"/>
+        <property name="context-root" value="search"/>
     </wb-module>
 </project-modules>

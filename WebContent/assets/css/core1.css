@@ -226,6 +226,7 @@ background:#fcfdfd;
   height: 40px;
   text-align: center;
   border-radius: 4px;
+  cursor: pointer;
   
   /*  특정 영역 안에서 Fixed로 엘리먼트 고정 시키기 */
   position: fixed;
@@ -239,15 +240,14 @@ background:#fcfdfd;
   visibility: hidden;
   z-index: 1000;
 }
-.back-to-top::after {
-  content: "\f077";
-  font-family: FontAwesome;
-  font-weight: normal;
-  font-style: normal;
-  font-size: 2em;
-  line-height: 40px;
-  color: #fff;
+
+.fa-angle-up:before {
+    content: "\f106";
+    font-size: 2em;
+    line-height: 40px;
+    color: #fff;
 }
+
 .back-to-top.show {
   opacity: 1;
   visibility: visible;

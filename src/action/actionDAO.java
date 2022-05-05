@@ -26,6 +26,7 @@ public class actionDAO {
 		
     	try {
     		Statement stmt = conn.createStatement();
+			//ResultSet rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_YN = 'Y' ORDER BY RAND()");
     		ResultSet rs = stmt.executeQuery("select * from TB_INTEGRATION ORDER BY RAND()");
     		ResultSetMetaData md = rs.getMetaData();
     		int columns = md.getColumnCount();

@@ -3,7 +3,6 @@
 <%@ page import="action.actionDAO"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.Map.Entry" %>
-
 <%
 	request.setCharacterEncoding("UTF-8"); 
 	actionDAO actionDAO = new actionDAO();
@@ -18,18 +17,20 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Insert title here</title>
+<title>전국 냉동기·에어컨 자재상 검색 서비스</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="./assets/vendor/js/helpers.js"></script>
     <script src="./assets/js/config.js"></script>
     
 	<!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="./assets/img/favicon/favicon.ico" />
-	<link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css" />
+    <link rel="icon" type="image/x-icon" href="./assets/img/favicon/logos.png" />
+	<link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.8.2/css/all.min.css" />
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="./assets/css/core.css" />
+    <link rel="stylesheet" href="./assets/css/core1.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
@@ -44,7 +45,7 @@
 	</div>
 	
 	<div id="continput">
-		<a class="back-to-top"></a>
+		<a class="back-to-top fas fa-angle-up"></a>
 		<div id="input-group">
 			<input type="text" id="searchtext" class="searchInput">
 			<button id="icon-src"><i class="fa fa-search" aria-hidden="true"></i></button>
@@ -80,120 +81,6 @@
 	<div id="header"></div>
 	
 </div>      
-		
-<script>
-var contInput = document.getElementById('continput');
-var gInput = document.getElementById('input-group');
-var input = document.getElementById('searchtext');
-var button = document.getElementById('icon-src');
-var logo = document.getElementById('logo');
-var results = document.getElementById('results');
-var redBg = document.getElementById('header');
-
-/*  View Animation */
-var element = [redBg, contInput, gInput, button, logo, results];
-var oldVal = $(".searchInput");
-
-input.addEventListener('focus', function(){
-	$("#container").css("overflow-y","scroll");
-	for (var i = 0; i < element.length; i++) {
-		element[i].classList.add('focus' + i);
-	}
-	
-	/* Top Scroll */
-	$('.back-to-top').on('click',function(e){
-	     e.preventDefault();
-	     $('#container').animate({scrollTop:0},600);
-	});
-	$("#container").scroll(function() {
-		if ($("#container").scrollTop() > 100) {
-	      $('.back-to-top').addClass('show');
-	    } else {
-	      $('.back-to-top').removeClass('show');
-	    }
-	});
-	
-}, false);
-
-input.addEventListener('keyup', function(){
-	if (results.childNodes.length === 0) {
-		results.classList.remove('visible');
-	} else {
-	results.classList.add('visible');
-	}
-},false);
-
-/* jquery for autocomplete*/
-jQuery(document).ready(function($) {
-  $("#searchtext").keyup(function() {
-    getAutoCompleteValues($("#searchtext").val());
-  });
-});
-
-function getAutoCompleteValues(val) {
-  $.ajax({
-    dataType: "jsonp",
-    jsonp: "cb",
-    cache: 'false',
-    // jsonpCallback: "callback",
-    url: "http://autocomplete.wunderground.com/aq?query=" + val + "&format=json",
-    // cache: false,
-    success: function(data) {
-      if (val == "") {
-	      $("#results").html('');
-	      $("#results").removeClass('result');
-      }else{
-	      $("#results").html('');
-	      $("#results").addClass('result');
-	      
-		  for (var i = 0; i < 8; i++) {
-	      	var city = data.RESULTS[i]['name'];
-	      	$("#results").append('<li><a href="#">'+city+'</a></li>'); 
-	      }
-	  }
-    }
-  });
-}
-
-/* Filter Search  */
-$(".searchInput").on("propertychange change keyup paste input", function () {
-  setTimeout(function () {
-    var currentVal = $(".searchInput").val();
-    if (currentVal == oldVal) {
-      return;
-    }
-
-    var listArray = $(".item").toArray();
-    listArray.forEach(function (c, i) {
-      var currentList = c;
-      var currentListText = c.innerText;
-      if (currentListText.includes(currentVal) == false) {
-        currentList.style.display = "none";
-      }
-      if (currentListText.includes(currentVal)) {
-        currentList.style.display = "block";
-      }
-      if (currentVal.trim() == "") {
-        currentList.style.display = "block";
-      }
-    });
-  }, 1000);
-});
-
-/*  Contents Copy */
-var address;
-function copy3(address) {
-	var obj = document.getElementById(address);
-	var range = document.createRange();
-	range.selectNode(obj.childNodes[0]);
-	var sel = window.getSelection();
-	sel.removeAllRanges();
-	sel.addRange(range); 
-	document.execCommand("copy");
-	sel.removeRange(range);
-	alert("주소가 복사 되었습니다.");
-}
-
-</script>
+<script language="JavaScript" src="./assets/js/core1.js" charset='utf-8'></script>
 </body>
 </html>
