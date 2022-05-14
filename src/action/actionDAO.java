@@ -23,7 +23,6 @@ public class actionDAO {
 	List<JSONObject> jsonObj = new ArrayList<JSONObject>();
 	
 	public ArrayList<HashMap<String,String>> selectAll() throws SQLException {
-		
     	try {
     		Statement stmt = conn.createStatement();
 			//ResultSet rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_YN = 'Y' ORDER BY RAND()");
@@ -47,6 +46,37 @@ public class actionDAO {
     		e.printStackTrace();
     	}
     	return list;
+    }
+	
+	public List<JSONObject> selectOfIndex(String paramItemsIndex) throws SQLException {
+		ResultSet rs = null;
+    	try {
+    		Statement stmt = conn.createStatement();
+    		if(paramItemsIndex.equals("prd-000")) {
+    			rs = stmt.executeQuery("select * from TB_INTEGRATION ORDER BY RAND()");
+    		}else {
+    			rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_PRD_TYPE='"+paramItemsIndex+"' ORDER BY RAND()");
+    		}
+    		ResultSetMetaData md = rs.getMetaData();
+    		int columns = md.getColumnCount();
+    		HashMap<String,String> row = new HashMap<String, String>(columns);
+    		JSONObject obj = new JSONObject();
+    		while(rs.next()) {   			
+    			for(int i=1; i<=columns; ++i) {
+					if(md.getColumnName(i).equals("UNIT_ID")){
+						row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
+					}else {
+						row.put(md.getColumnName(i), (String) rs.getObject(i));    	
+					}
+				}
+    			obj = new JSONObject(row);
+    			jsonObj.add(obj);
+    		}
+			/* jsonList.add(jsonObj); */
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return jsonObj;
     }
 	
 }

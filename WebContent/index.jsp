@@ -1,5 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR"%>
+    pageEncoding="EUC-KR" trimDirectiveWhitespaces="true" %>
 <%@ page import="action.actionDAO"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.Map.Entry" %>
@@ -107,19 +107,20 @@
 	<div class="row mb-5">
 	    <div class="swiper-container">
 	        <div class="swiper-wrapper">
-	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;">냉동부품</div>
+	        	<div id="prd-000" class="swiper-slide" style="background-color: #CC95C0;">전체</div>
+	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;">냉동기</div>
 	            <div id="prd-002" class="swiper-slide" style="background-color: #93F9B9;">에어컨</div>
 	            <div id="prd-003" class="swiper-slide" style="background-color: #F45C43;">오버홀</div>
 	            <div id="prd-004" class="swiper-slide" style="background-color: #F7BB97;">인버터</div>
 	            <div id="prd-005" class="swiper-slide" style="background-color: #3CD3AD;">방열도어</div>
 	            <div id="prd-006" class="swiper-slide" style="background-color: #F8CDDA;">스크류</div>
 	            <div id="prd-007" class="swiper-slide" style="background-color: #F09819;">히트펌프</div>
-	            <div id="prd-008" class="swiper-slide" style="background-color: #CC95C0;">공조기</div>
-	            <div id="prd-009" class="swiper-slide" style="background-color: #26D0CE;">쇼케이스</div>
-	            <div id="prd-010" class="swiper-slide" style="background-color: #E1F5C4;">항온항습기</div>
-	            <div id="prd-011" class="swiper-slide" style="background-color: #EDDE5D;">열교환기</div>
-	            <div id="prd-012" class="swiper-slide" style="background-color: #E7E9BB;">냉매</div>
-	            <div id="prd-013" class="swiper-slide" style="background-color: #5FC3E4;">냉장냉동</div>
+	            <!-- <div id="prd-008" class="swiper-slide" style="background-color: #CC95C0;">공조기</div> -->
+	            <div id="prd-008" class="swiper-slide" style="background-color: #26D0CE;">쇼케이스</div>
+	            <div id="prd-009" class="swiper-slide" style="background-color: #E1F5C4;">항온항습기</div>
+	            <div id="prd-010" class="swiper-slide" style="background-color: #EDDE5D;">열교환기</div>
+	            <div id="prd-011" class="swiper-slide" style="background-color: #E7E9BB;">냉매</div>
+	            <!-- <div id="prd-013" class="swiper-slide" style="background-color: #5FC3E4;">냉장냉동</div> -->
 	        </div>
 	    </div>
 	
@@ -141,21 +142,57 @@
              	 </div> 
            </div> 
 	    <%}%>
-	    
         </div>
+        
 	</div> 
 	
 	<div id="header"></div>
 	
 </div>      
 <script>
-/* $('.swiper-wrapper').click(function(){
-    alert();
-}); */
-
 $(".swiper-slide").on('click',function(){
 	var id_check = $(this).attr("id");
-	alert(id_check);
+	/* alert(id_check); */
+	$.ajax({
+		type: 'POST',
+		url: 'typeAjax.jsp',
+		dataType: 'text',
+		data: {
+			clickItemId:id_check
+		},
+		success: function(res){
+			/* res = res.replace(/[\[\]\;]/gi,''); */
+			$('#results *').remove();
+			res = res.replace(/\;/gi,''); //[ ] 대괄호 넣어주니깐 구문 , 에러 안남. 즉, Json 형태로 맞춤 (  [{key:value}]   )
+			res = res.trim(); // 공백 제어
+			if(res == '[]'){
+				alert("현재 준비 중 입니다.");
+			}
+			/* alert(typeof res === 'object'); // false */
+			let json = JSON.parse(res); 
+			/* alert(typeof json === 'object'); //true */
+			let keys = Object.keys(json);
+
+			/*
+				json[key].UNIT_COMPANY 이렇게 값을 따로따로 출력 가능.
+			*/
+			
+			let $temp;
+		     for (let i=0; i<keys.length; i++) {
+		    	let key = keys[i];
+		    	/* console.log("key : " + key + ", value : " + json[key].UNIT_COMPANY); */
+		    	$temp = $('#results').append('<div class="item card mb-3 bs-light"><div id="card-block" class="card-body"><div class="card-title text-white" style="margin:auto 0;line-height: 50px;">'
+			    + '<a href="#"><img src="./assets/img/location.png" style="cursor: pointer;max-width:80px; width:80%; height:auto;"></a></div><div class="card-sub-block">'
+			    + '<div class="card-title text-white">'+json[key].UNIT_COMPANY+'<img src="./assets/img/phone-connection.png" onclick="document.location.href=&#39;tel:'+json[key].UNIT_PHONE+'&#39;" style="float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;"></div>'
+			    + '<div id="address'+i+'" class="card-title text-white" onclick="copy3(&#39;address'+i+'&#39;)" style="cursor: pointer;padding-top:10px;">'
+			    + ''+json[key].UNIT_ADDRESS+'<img src="./assets/img/contents-copy.png" style="width:20px;height:15px;"></div></div></div></div>');
+		    } 	 
+		},
+		error: function(){
+			alert("False");
+		}
+	});
+	
 });
 
 $(document).ready(function() {
