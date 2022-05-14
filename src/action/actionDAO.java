@@ -56,23 +56,27 @@ public class actionDAO {
     			rs = stmt.executeQuery("select * from TB_INTEGRATION ORDER BY RAND()");
     		}else {
     			rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_PRD_TYPE='"+paramItemsIndex+"' ORDER BY RAND()");
-    		}
-    		ResultSetMetaData md = rs.getMetaData();
-    		int columns = md.getColumnCount();
-    		HashMap<String,String> row = new HashMap<String, String>(columns);
-    		JSONObject obj = new JSONObject();
-    		while(rs.next()) {   			
-    			for(int i=1; i<=columns; ++i) {
-					if(md.getColumnName(i).equals("UNIT_ID")){
-						row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
-					}else {
-						row.put(md.getColumnName(i), (String) rs.getObject(i));    	
-					}
-				}
-    			obj = new JSONObject(row);
-    			jsonObj.add(obj);
-    		}
-			/* jsonList.add(jsonObj); */
+    		}    
+    		if(rs.isBeforeFirst()) {
+    			ResultSetMetaData md = rs.getMetaData();
+        		int columns = md.getColumnCount();
+        		HashMap<String,String> row = new HashMap<String, String>(columns);
+        		JSONObject obj = new JSONObject();
+        		while(rs.next()) {   			
+        			for(int i=1; i<=columns; ++i) {
+    					if(md.getColumnName(i).equals("UNIT_ID")){
+    						row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
+    					}else {
+    						row.put(md.getColumnName(i), (String) rs.getObject(i));    	
+    					}
+    				}
+        			obj = new JSONObject(row);
+        			jsonObj.add(obj);
+        		}
+    			/* jsonList.add(jsonObj); */
+			}else {
+				System.out.println("is not data.");
+			}
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
