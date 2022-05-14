@@ -166,7 +166,7 @@ $(".swiper-slide").on('click',function(){
 			res = res.replace(/\;/gi,''); //[ ] 대괄호 넣어주니깐 구문 , 에러 안남. 즉, Json 형태로 맞춤 (  [{key:value}]   )
 			res = res.trim(); // 공백 제어
 			if(res == '[]'){
-				alert("현재 준비 중 입니다.");
+				confirm("작업 진행 중 입니다.");
 			}
 			/* alert(typeof res === 'object'); // false */
 			let json = JSON.parse(res); 

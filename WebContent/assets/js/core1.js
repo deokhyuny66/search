@@ -107,5 +107,5 @@ function copy3(address) {
 	sel.addRange(range); 
 	document.execCommand("copy");
 	sel.removeRange(range);
-	alert("주소가 복사 되었습니다.");
+	confirm("주소가 복사 되었습니다.");
 }
