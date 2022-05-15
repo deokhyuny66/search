@@ -22,6 +22,7 @@ public class actionDAO {
 	JSONArray jsonList = new JSONArray();
 	List<JSONObject> jsonObj = new ArrayList<JSONObject>();
 	
+
 	public ArrayList<HashMap<String,String>> selectAll() throws SQLException {
     	try {
     		Statement stmt = conn.createStatement();
@@ -54,10 +55,13 @@ public class actionDAO {
     		Statement stmt = conn.createStatement();
     		if(paramItemsIndex.equals("prd-000")) {
     			rs = stmt.executeQuery("select * from TB_INTEGRATION ORDER BY RAND()");
-    		}else {
+    		}else if(paramItemsIndex.equals("prd-001") || paramItemsIndex.equals("prd-002")){
     			rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_PRD_TYPE='"+paramItemsIndex+"' ORDER BY RAND()");
-    		}    
-    		if(rs.isBeforeFirst()) {
+    		}
+    		
+    		if(rs == null) {
+    			System.out.println("is not data.");
+    		}else {
     			ResultSetMetaData md = rs.getMetaData();
         		int columns = md.getColumnCount();
         		HashMap<String,String> row = new HashMap<String, String>(columns);
@@ -73,10 +77,7 @@ public class actionDAO {
         			obj = new JSONObject(row);
         			jsonObj.add(obj);
         		}
-    			/* jsonList.add(jsonObj); */
-			}else {
-				System.out.println("is not data.");
-			}
+    		}
     	} catch (Exception e) {
     		e.printStackTrace();
     	}

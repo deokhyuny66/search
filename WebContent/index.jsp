@@ -10,7 +10,6 @@
 	ArrayList<HashMap<String,String>> rs_dao_list = new ArrayList<HashMap<String,String>>();
 	HashMap<String,String> map = new HashMap<String,String>();
 	rs_dao_list = actionDAO.selectAll();
-
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -119,12 +118,12 @@
 	            <div id="prd-008" class="swiper-slide" style="background-color: #26D0CE;">쇼케이스</div>
 	            <div id="prd-009" class="swiper-slide" style="background-color: #E1F5C4;">항온항습기</div>
 	            <div id="prd-010" class="swiper-slide" style="background-color: #EDDE5D;">열교환기</div>
-	            <div id="prd-011" class="swiper-slide" style="background-color: #E7E9BB;">냉매</div>
 	            <!-- <div id="prd-013" class="swiper-slide" style="background-color: #5FC3E4;">냉장냉동</div> -->
 	        </div>
 	    </div>
 	
-        <div id="results" class="col-md-6 col-lg-4">
+
+       <div id="results" class="col-md-6 col-lg-4">
         <% for (j=0;j<rs_dao_list.size();j++) {%>
            <div class="item card mb-3 bs-light">
            	

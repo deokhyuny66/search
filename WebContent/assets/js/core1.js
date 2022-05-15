@@ -52,7 +52,7 @@ function getAutoCompleteValues(val) {
     jsonp: "cb",
     cache: 'false',
     // jsonpCallback: "callback",
-    url: "http://autocomplete.wunderground.com/aq?query=" + val + "&format=json",
+    url: "http://autocomplete.wunderground.com/aq?query=" + encodeURI(val) + "&format=json",
     // cache: false,
     success: function(data) {
       if (val == "") {
