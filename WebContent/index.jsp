@@ -129,7 +129,9 @@
            	
 	             <div id="card-block" class="card-body"> 
 	                  	<div class="card-title text-white" style="margin:auto 0;line-height: 50px;">
-	                  		<a href="#"><img src="./assets/img/location.png" style="cursor: pointer;max-width:80px; width:80%; height:auto;"></a></div>
+	                  		<img src="./assets/img/location.png" style="margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;">
+	                  		<div class="swiper-slide" style="background-color: <%= rs_dao_list.get(j).get("UNIT_COLOR") %>;width: 50px;height: 15px;font-size: 10px;margin:0 auto;"><%= rs_dao_list.get(j).get("UNIT_LOGO") %></div>
+	                  	</div>
 	                  	<div class="card-sub-block">
 		                  		<div class="card-title text-white"><%= rs_dao_list.get(j).get("UNIT_COMPANY") %>
 	                  				<img src="./assets/img/phone-connection.png" onclick="document.location.href='tel:<%= rs_dao_list.get(j).get("UNIT_PHONE") %>'" 
