@@ -14,7 +14,7 @@ $(".swiper-slide").on('click',function(){
 			res = res.replace(/\;/gi,''); //[ ] 대괄호 넣어주니깐 구문 , 에러 안남. 즉, Json 형태로 맞춤 (  [{key:value}]   )
 			res = res.trim(); // 공백 제어
 			if(res == '[]'){
-				$('#results').html("유지관리 중입니다.").css("font-family","'Nanum Gothic Coding', monospace").css("font-size","16px").css("text-align","center");
+				$('#results').html("준비 중입니다.").css("font-family","'Nanum Gothic Coding', monospace").css("font-size","16px").css("text-align","center");
 			}else {
 				$('#results').empty();
 				/* alert(typeof res === 'object'); // false */
@@ -51,6 +51,7 @@ $(document).ready(function() {
         slidesPerView: 5,
 		centeredSlides: true,
         spaceBetween: 5,
+		freeMode: true,
 		grabCursor: true,
 		touchStartPreventDefault: true,
 		touchReleaseOnEdges: true
