@@ -9,8 +9,18 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+import java.net.*;
+
+
+import org.json.simple.JSONValue;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
+
+
 import util.DatabaseUtil;
 import action.actionDTO;
 
@@ -22,7 +32,6 @@ public class actionDAO {
 	JSONArray jsonList = new JSONArray();
 	List<JSONObject> jsonObj = new ArrayList<JSONObject>();
 	
-
 	public ArrayList<HashMap<String,String>> selectAll() throws SQLException {
     	try {
     		Statement stmt = conn.createStatement();
@@ -58,6 +67,37 @@ public class actionDAO {
     		}else if(paramItemsIndex.equals("prd-001") || paramItemsIndex.equals("prd-002")){
     			rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_PRD_TYPE='"+paramItemsIndex+"' ORDER BY RAND()");
     		}
+    		
+    		if(rs == null) {
+    			System.out.println("is not data.");
+    		}else {
+    			ResultSetMetaData md = rs.getMetaData();
+        		int columns = md.getColumnCount();
+        		HashMap<String,String> row = new HashMap<String, String>(columns);
+        		JSONObject obj = new JSONObject();
+        		while(rs.next()) {   			
+        			for(int i=1; i<=columns; ++i) {
+    					if(md.getColumnName(i).equals("UNIT_ID")){
+    						row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
+    					}else {
+    						row.put(md.getColumnName(i), (String) rs.getObject(i));    	
+    					}
+    				}
+        			obj = new JSONObject(row);
+        			jsonObj.add(obj);
+        		}
+    		}
+    	} catch (Exception e) {
+    		e.printStackTrace();
+    	}
+    	return jsonObj;
+    }
+	
+	public List<JSONObject> selectGeolocation(String paramItemsIndex) throws SQLException {
+		ResultSet rs = null;
+    	try {
+    		Statement stmt = conn.createStatement();
+    		rs = stmt.executeQuery("SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE 'AC-%' AND UNIT_ADDRESS LIKE '"+paramItemsIndex+"%' ");
     		
     		if(rs == null) {
     			System.out.println("is not data.");

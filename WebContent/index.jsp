@@ -1,22 +1,25 @@
-<%@ page language="java" contentType="text/html; charset=EUC-KR"
-    pageEncoding="EUC-KR" trimDirectiveWhitespaces="true" %>
+<%@page import="action.revNgeocoder"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8" trimDirectiveWhitespaces="true" %>
+    
 <%@ page import="action.actionDAO"%>
+<%@ page import="action.revNgeocoder"%>
 <%@ page import="java.util.*" %>
 <%@ page import="java.util.Map.Entry" %>
 <%
 	request.setCharacterEncoding("UTF-8"); 
 	int j = 0;
-	actionDAO actionDAO = new actionDAO();
+	actionDAO dao = new actionDAO();
 	ArrayList<HashMap<String,String>> rs_dao_list = new ArrayList<HashMap<String,String>>();
 	HashMap<String,String> map = new HashMap<String,String>();
-	rs_dao_list = actionDAO.selectAll();
+	rs_dao_list = dao.selectAll();
 %>
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset=EUC-KR">
-<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no"">
-<title>Àü±¹ ³Ãµ¿±â¡¤¿¡¾îÄÁ ÀÚÀç»ó °Ë»ö ¼­ºñ½º</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,minimum-scale=1, maximum-scale=1, user-scalable=no">
+<title>ì „êµ­ ëƒ‰ë™ê¸°Â·ì—ì–´ì»¨ ìì¬ìƒ ê²€ìƒ‰ ì„œë¹„ìŠ¤</title>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
 	<script src="./assets/vendor/js/helpers.js"></script>
     <script src="./assets/js/config.js"></script>
@@ -87,10 +90,41 @@
 		box-shadow: 0 0 6px gray; 
 	}
 </style>
+<script>
+
+window.onload = function() {
+	  var startPos;
+	  var latlong;
+	  var geoSuccess = function(position) {
+	    startPos = position;
+	    latlong = startPos.coords.latitude + "," + startPos.coords.longitude;
+	  }  
+	  
+	  $('.btn-geo').on('click',function(){
+			navigator.geolocation.getCurrentPosition(geoSuccess);
+	    	$.ajax({
+		    	type: 'POST',
+		    	url: 'jeoAjax.jsp',
+		    	dataType: 'text',
+		    	data: {
+		    		"geolocation":latlong
+		    	},
+		    	success: function(res){
+		    			 alert(data);
+		    	},
+		    	error: function(){
+		    		alert("False");
+		    	}
+		   });
+	    });
+};
+</script>
 </head>
 <body>
 <div id="container">
-
+	<div>
+		<input type="button" class="btn-geo" value="butn" />
+	</div>
 	<div id="logo">
 		<p>Coolinic<span> Search</span></p>
 	</div>
@@ -106,19 +140,19 @@
 	<div class="row mb-5">
 	    <div class="swiper-container">
 	        <div class="swiper-wrapper">
-	        	<div id="prd-000" class="swiper-slide" style="background-color: #CC95C0;">ÀüÃ¼</div>
-	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;">³Ãµ¿±â</div>
-	            <div id="prd-002" class="swiper-slide" style="background-color: #93F9B9;">¿¡¾îÄÁ</div>
-	            <div id="prd-003" class="swiper-slide" style="background-color: #F45C43;">¿À¹öÈ¦</div>
-	            <div id="prd-004" class="swiper-slide" style="background-color: #F7BB97;">ÀÎ¹öÅÍ</div>
-	            <div id="prd-005" class="swiper-slide" style="background-color: #3CD3AD;">¹æ¿­µµ¾î</div>
-	            <div id="prd-006" class="swiper-slide" style="background-color: #F8CDDA;">½ºÅ©·ù</div>
-	            <div id="prd-007" class="swiper-slide" style="background-color: #F09819;">È÷Æ®ÆßÇÁ</div>
-	            <!-- <div id="prd-008" class="swiper-slide" style="background-color: #CC95C0;">°øÁ¶±â</div> -->
-	            <div id="prd-008" class="swiper-slide" style="background-color: #26D0CE;">¼îÄÉÀÌ½º</div>
-	            <div id="prd-009" class="swiper-slide" style="background-color: #E1F5C4;">Ç×¿ÂÇ×½À±â</div>
-	            <div id="prd-010" class="swiper-slide" style="background-color: #EDDE5D;">¿­±³È¯±â</div>
-	            <!-- <div id="prd-013" class="swiper-slide" style="background-color: #5FC3E4;">³ÃÀå³Ãµ¿</div> -->
+	        	<div id="prd-000" class="swiper-slide" style="background-color: #CC95C0;">ì „ì²´</div>
+	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;">ëƒ‰ë™ê¸°</div>
+	            <div id="prd-002" class="swiper-slide" style="background-color: #93F9B9;">ì—ì–´ì»¨</div>
+	            <div id="prd-003" class="swiper-slide" style="background-color: #F45C43;">ì˜¤ë²„í™€</div>
+	            <div id="prd-004" class="swiper-slide" style="background-color: #F7BB97;">ì¸ë²„í„°</div>
+	            <div id="prd-005" class="swiper-slide" style="background-color: #3CD3AD;">ë°©ì—´ë„ì–´</div>
+	            <div id="prd-006" class="swiper-slide" style="background-color: #F8CDDA;">ìŠ¤í¬ë¥˜</div>
+	            <div id="prd-007" class="swiper-slide" style="background-color: #F09819;">íˆíŠ¸íŒí”„</div>
+	            <!-- <div id="prd-008" class="swiper-slide" style="background-color: #CC95C0;">ê³µì¡°ê¸°</div> -->
+	            <div id="prd-008" class="swiper-slide" style="background-color: #26D0CE;">ì‡¼ì¼€ì´ìŠ¤</div>
+	            <div id="prd-009" class="swiper-slide" style="background-color: #E1F5C4;">í•­ì˜¨í•­ìŠµê¸°</div>
+	            <div id="prd-010" class="swiper-slide" style="background-color: #EDDE5D;">ì—´êµí™˜ê¸°</div>
+	            <!-- <div id="prd-013" class="swiper-slide" style="background-color: #5FC3E4;">ëƒ‰ì¥ëƒ‰ë™</div> -->
 	        </div>
 	    </div>
 	
