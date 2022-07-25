@@ -85,7 +85,7 @@ public class revNgeocoder {
 	public static List<JSONObject> geoLocationCulcurate(String objListParam,double latitudeParam, double longitudeParam) throws ParseException{
 		List<JSONObject> geoLocationObjList = new ArrayList<JSONObject>();
 		JSONParser parser = new JSONParser();
-		
+
 		//단순 String 형태이기 때문에 사용을 위해서 다시 JSONObject로 형변환 해줘야 한다.
 		JSONObject univ = (JSONObject)parser.parse(objListParam);
 		//System.out.println("JSONObject univ : " + univ.toJSONString());
@@ -141,7 +141,7 @@ public class revNgeocoder {
 		    				Double.parseDouble((String)tmp.get("UNIT_LONGITUDE")), "kilometer");
 		    
 		   //각 인덱스에 접근해서 값들 추가 한다.
-		   tmp.put("Meter", Math.round(distanceMeter)); //소수점 반올림
+		   tmp.put("Meter", String.valueOf(Math.round(distanceMeter))); //소수점 반올림
 		   tmp.put("KiloMeter", String.format("%.2f",distanceKiloMeter)); //소수점 2재짜리 반올림
 		   /*
 		     {"Meter":1629,"KiloMeter":"1.63","
@@ -155,7 +155,6 @@ public class revNgeocoder {
 		/*
 		  [{"Meter":1629,"KiloMeter":"1.63","UNIT_PHONE"....}, {"Meter":1900,"....
 		 */
-		
 		//최종 목표인 ArrayList<JSONObject> 형태로 반환
 		return geoLocationObjList;
 	}

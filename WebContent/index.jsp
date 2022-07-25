@@ -24,6 +24,8 @@
 	<script src="./assets/vendor/js/helpers.js"></script>
     <script src="./assets/js/config.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+	<script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.2.0/js/swiper.js"></script>
     
 	<!-- Favicon -->
@@ -99,7 +101,7 @@ window.onload = function() {
 	    startPos = position;
 	    latlong = startPos.coords.latitude + "," + startPos.coords.longitude;
 	  }  
-	  
+
 	  $('.btn-geo').on('click',function(){
 			navigator.geolocation.getCurrentPosition(geoSuccess);
 	    	$.ajax({
@@ -110,7 +112,13 @@ window.onload = function() {
 		    		"geolocation":latlong
 		    	},
 		    	success: function(res){
-		    			 alert(res);
+		    		res = res.replace(/\;/gi,'');
+                    let json = JSON.parse(res);
+                    let keys = Object.keys(json);
+		    		for(var i=0;i<keys.length;i++) {
+		    			let key = keys[i];
+		    			alert(json[key].UNIT_COMPANY);
+		    		}
 		    	},
 		    	error: function(){
 		    		alert("False");
