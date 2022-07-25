@@ -110,7 +110,7 @@ window.onload = function() {
 		    		"geolocation":latlong
 		    	},
 		    	success: function(res){
-		    			 alert(data);
+		    			 alert(res);
 		    	},
 		    	error: function(){
 		    		alert("False");

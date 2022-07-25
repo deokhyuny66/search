@@ -9,17 +9,13 @@ import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
-
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.net.*;
 
-
 import org.json.simple.JSONValue;
-
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
-
 
 import util.DatabaseUtil;
 import action.actionDTO;
@@ -29,7 +25,6 @@ public class actionDAO {
 	actionDTO actionDTO = new actionDTO();
 	ArrayList<HashMap<String,String>> list = new ArrayList<HashMap<String,String>>();
 	ArrayList<HashMap<String,String>> listOfIndex = new ArrayList<HashMap<String,String>>();
-	JSONArray jsonList = new JSONArray();
 	List<JSONObject> jsonObj = new ArrayList<JSONObject>();
 	
 	public ArrayList<HashMap<String,String>> selectAll() throws SQLException {
@@ -93,8 +88,12 @@ public class actionDAO {
     	return jsonObj;
     }
 	
-	public List<JSONObject> selectGeolocation(String paramItemsIndex) throws SQLException {
+	@SuppressWarnings("unchecked")
+	public String selectGeolocation(String paramItemsIndex) throws SQLException {
 		ResultSet rs = null;
+		JSONObject objJson = new JSONObject();
+		JSONArray jsonArry = new JSONArray();
+		String json = null;
     	try {
     		Statement stmt = conn.createStatement();
     		rs = stmt.executeQuery("SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE 'AC-%' AND UNIT_ADDRESS LIKE '"+paramItemsIndex+"%' ");
@@ -105,7 +104,6 @@ public class actionDAO {
     			ResultSetMetaData md = rs.getMetaData();
         		int columns = md.getColumnCount();
         		HashMap<String,String> row = new HashMap<String, String>(columns);
-        		JSONObject obj = new JSONObject();
         		while(rs.next()) {   			
         			for(int i=1; i<=columns; ++i) {
     					if(md.getColumnName(i).equals("UNIT_ID")){
@@ -113,15 +111,40 @@ public class actionDAO {
     					}else {
     						row.put(md.getColumnName(i), (String) rs.getObject(i));    	
     					}
+    					objJson = new JSONObject(row);
     				}
-        			obj = new JSONObject(row);
-        			jsonObj.add(obj);
+        			//JSONObject 값을 담아서 배열에 담기.
+        			JSONObject[] objsa = new JSONObject[]{objJson};
+        			for(int i=0;i<objsa.length;i++){
+        				jsonArry.add(i, objsa[i]);
+        			}
+        			//System.out.println("jsonArry : " + jsonArry);
+        			/*
+        			 jsonArry : [{"UNIT_LINK":"null","UNIT_ID":"392","...
+					 jsonArry : [{"UNIT_LINK":"null","UNIT_ID":"393","...
+					 jsonArry : [{"UNIT_LINK":"null","UNIT_ID":"397","...
+					 jsonArry : [{"UNIT_LINK":"null","UNIT_ID":"398","...
+					 jsonArry : [{"UNIT_LINK":"null","UNIT_ID":"399","...
+        			 */
         		}
     		}
+    		JSONObject univ = new JSONObject();
+    		univ.put("univ", jsonArry);
+			//System.out.println("JSONObject univ : " + univ);
+			/*
+			 	JSONObject univ : {"univ":[{"UNIT_LINK":"null","UNIT_ID":"399",""},{"UNIT_LINK":"null","UNIT_ID":"398","....
+			 */
+	
+			//문자열로 만들어서 전달한다. JSONObject로 보내려고 하니깐 연속적으로 담지 못하고, 마지막번쨰 값만 전달되는 문제가 있었음....
+    		
+    		json = univ.toJSONString();
+    		
     	} catch (Exception e) {
     		e.printStackTrace();
     	}
-    	return jsonObj;
+    	
+    	//json String univ : {"univ":[{"UNIT_LINK":"null","UNIT_ID":"399",""},{"UNIT_LINK":"null","UNIT_ID":"398","....
+    	return json;
     }
 	
 }

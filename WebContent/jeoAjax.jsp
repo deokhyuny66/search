@@ -12,7 +12,7 @@
 	actionDTO dto = new actionDTO();
 	String[] latlongArry = latlong.split(",");
 	String gpsArrayCondition = null;
-	List<JSONObject> objList = new ArrayList<JSONObject>();
+	List<JSONObject> objNList = new ArrayList<JSONObject>();
 	
 	if(latlong == null){
 		System.out.println("init");
@@ -20,7 +20,9 @@
 		dto.setLatitude(Double.parseDouble(latlongArry[0]));
 		dto.setLongitude(Double.parseDouble(latlongArry[1]));
 		gpsArrayCondition = revNgeocoder.call(dto.getLatitude(),dto.getLongitude());
-		objList = revNgeocoder.geoLocationCulcurate(dao.selectGeolocation(gpsArrayCondition),dto.getLatitude(),dto.getLongitude());
-		
+		String json = dao.selectGeolocation(gpsArrayCondition);
+		objNList = revNgeocoder.geoLocationCulcurate(json,dto.getLatitude(),dto.getLongitude());
 	}
 %>
+
+<%= objNList %>
