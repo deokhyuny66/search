@@ -93,18 +93,23 @@
 	}
 </style>
 <script>
+var startPos;
+var latlong;
+var parama;
 
-window.onload = function() {
-	  var startPos;
-	  var latlong;
-	  var geoSuccess = function(position) {
-	    startPos = position;
-	    latlong = startPos.coords.latitude + "," + startPos.coords.longitude;
-	  }  
-
-	  $('.btn-geo').on('click',function(){
-			navigator.geolocation.getCurrentPosition(geoSuccess);
-	    	$.ajax({
+function fNCall(param){
+	parama = "'#"+param+"'";
+	var geoSuccess = function(position) {
+	  startPos = position;
+	  latlong = startPos.coords.latitude + "," + startPos.coords.longitude;
+	}  
+	navigator.geolocation.getCurrentPosition(geoSuccess);
+	
+	$('#prd-000').ready(function(){
+		if(latlong == "" || latlong == null || typeof latlong == "undefined"){
+			console.log("init value.");
+		}else {
+		  	    $.ajax({
 		    	type: 'POST',
 		    	url: 'jeoAjax.jsp',
 		    	dataType: 'text',
@@ -113,8 +118,9 @@ window.onload = function() {
 		    	},
 		    	success: function(res){
 		    		res = res.replace(/\;/gi,'');
-                    let json = JSON.parse(res);
-                    let keys = Object.keys(json);
+		               let json = JSON.parse(res);
+		               let keys = Object.keys(json);
+		              
 		    		for(var i=0;i<keys.length;i++) {
 		    			let key = keys[i];
 		    			alert(json[key].UNIT_COMPANY);
@@ -123,9 +129,10 @@ window.onload = function() {
 		    	error: function(){
 		    		alert("False");
 		    	}
-		   });
-	    });
-};
+		    });
+		  }
+	  }); 
+}
 </script>
 </head>
 <body>
@@ -148,7 +155,7 @@ window.onload = function() {
 	<div class="row mb-5">
 	    <div class="swiper-container">
 	        <div class="swiper-wrapper">
-	        	<div id="prd-000" class="swiper-slide" style="background-color: #CC95C0;">전체</div>
+	        	<div id="prd-000" class="swiper-slide" style="background-color: #CC95C0;" onclick="fNCall('prd-000');">전체</div>
 	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;">냉동기</div>
 	            <div id="prd-002" class="swiper-slide" style="background-color: #93F9B9;">에어컨</div>
 	            <div id="prd-003" class="swiper-slide" style="background-color: #F45C43;">오버홀</div>
