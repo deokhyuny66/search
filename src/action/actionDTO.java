@@ -9,7 +9,16 @@ public class actionDTO {
 	double latitude = 0.0;
 	double longitude = 0.0;
 	List<String> items_arr = null;
+	String typeGubun = null;
 
+	public String getTypeGubun() {
+		return this.typeGubun;
+	}
+	  
+	public void setTypeGubun(String paramTypeGubun) {
+		 this.typeGubun = paramTypeGubun;
+	}
+	
 	public double getLongitude() {
 		return this.longitude;
 	}

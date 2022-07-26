@@ -55,7 +55,6 @@
         top: 50px;
         padding-top: 8px;
         padding-bottom: 8px;
-        
     }
     .swiper-slide {
     	cursor: pointer;
@@ -81,6 +80,34 @@
         -webkit-transition: 0.3s;
   		transition: 0.3s;
     }
+    .swiper-slide-location {
+		display: flex;
+	    font-size: 15px;
+	    font-weight: bold;
+	    /* margin: 0; */
+	    margin-top: -15px;
+	    margin-left: 4px;
+	    margin-bottom: 0px;
+	    display: -webkit-flex;
+	    display: -webkit-box;
+	    display: -ms-flexbox;
+	    align-items: center;
+	    justify-content: center;
+	    -webkit-align-items: center;
+	    -webkit-box-pack: center;
+	    -ms-flex-pack: center;
+	    -webkit-justify-content: center;
+	    justify-content: center;
+	    -webkit-box-align: center;
+	    -ms-flex-align: center;
+	    height: 33px;
+	    width: 50px;
+	    vertical-align: text-top;
+	    text-align: center;
+	    /* position: absolute; */
+	    justify-content: center;
+	    font-family: 'IBM Plex Sans KR', sans-serif;
+    }
     .swiper-slide:hover {
     	z-index: 1;
   		-webkit-transform: scale(2);
@@ -98,48 +125,59 @@ var latlong;
 var parama;
 
 function fNCall(param){
-	parama = "'#"+param+"'";
+	parama = "#"+param;
 	var geoSuccess = function(position) {
 	  startPos = position;
-	  latlong = startPos.coords.latitude + "," + startPos.coords.longitude;
+	  latlong = startPos.coords.latitude + "," + startPos.coords.longitude + "," + parama;
 	}  
 	navigator.geolocation.getCurrentPosition(geoSuccess);
 	
-	$('#prd-000').ready(function(){
-		if(latlong == "" || latlong == null || typeof latlong == "undefined"){
-			console.log("init value.");
-		}else {
+	if(parama != "#prd-000"){
+		$(parama).ready(function(){
+			if(latlong == "" || latlong == null || typeof latlong == "undefined"){
+				console.log("init value.");
+			}else {
 		  	    $.ajax({
-		    	type: 'POST',
-		    	url: 'jeoAjax.jsp',
-		    	dataType: 'text',
-		    	data: {
-		    		"geolocation":latlong
-		    	},
-		    	success: function(res){
-		    		res = res.replace(/\;/gi,'');
-		               let json = JSON.parse(res);
-		               let keys = Object.keys(json);
-		              
-		    		for(var i=0;i<keys.length;i++) {
-		    			let key = keys[i];
-		    			alert(json[key].UNIT_COMPANY);
-		    		}
-		    	},
-		    	error: function(){
-		    		alert("False");
-		    	}
-		    });
-		  }
-	  }); 
+			    	type: 'POST',
+			    	url: 'jeoAjax.jsp',
+			    	dataType: 'text',
+			    	data: {
+			    		"geolocation":latlong
+			    	},
+			    	success: function(res){
+			    		$('#results *').remove();
+			    		res = res.replace(/\;/gi,'');
+		                let json = JSON.parse(res);
+		                let keys = Object.keys(json);
+			    		for(var i=0;i<keys.length;i++) {
+			    			let key = keys[i];
+			    			if(Number(json[key].Meter) > 1000){
+			    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
+				    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].KiloMeter+"<span style='font-size:8px;font-weight:700;'>km</span></div></div>"
+				    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
+				    					+ "<div id='address"+i+"' class='card-title text-white' onclick='copy3('address"+i+"')' style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");
+			    			}else {
+			    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
+				    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].Meter+"<span style='font-size:8px;font-weight:700;'>m</span></div></div>"
+				    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
+				    					+ "<div id='address"+i+"' class='card-title text-white' onclick='copy3('address"+i+"')' style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");	
+			    			}
+			    			
+			    		}
+			    	},
+			    	error: function(){
+			    		console.log("False");
+			    	}
+			    });
+			  }
+		  }); 
+	}
+	
 }
 </script>
 </head>
 <body>
 <div id="container">
-	<div>
-		<input type="button" class="btn-geo" value="butn" />
-	</div>
 	<div id="logo">
 		<p>Coolinic<span> Search</span></p>
 	</div>
@@ -156,8 +194,8 @@ function fNCall(param){
 	    <div class="swiper-container">
 	        <div class="swiper-wrapper">
 	        	<div id="prd-000" class="swiper-slide" style="background-color: #CC95C0;" onclick="fNCall('prd-000');">전체</div>
-	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;">냉동기</div>
-	            <div id="prd-002" class="swiper-slide" style="background-color: #93F9B9;">에어컨</div>
+	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;" onclick="fNCall('prd-001');">냉동기</div>
+	            <div id="prd-002" class="swiper-slide" style="background-color: #93F9B9;" onclick="fNCall('prd-002');">에어컨</div>
 	            <div id="prd-003" class="swiper-slide" style="background-color: #F45C43;">오버홀</div>
 	            <div id="prd-004" class="swiper-slide" style="background-color: #F7BB97;">인버터</div>
 	            <div id="prd-005" class="swiper-slide" style="background-color: #3CD3AD;">방열도어</div>

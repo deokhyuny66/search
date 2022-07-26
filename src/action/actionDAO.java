@@ -89,14 +89,14 @@ public class actionDAO {
     }
 	
 	@SuppressWarnings("unchecked")
-	public String selectGeolocation(String paramItemsIndex) throws SQLException {
+	public String selectGeolocation(String paramItemsIndex, String paramType) throws SQLException {
 		ResultSet rs = null;
 		JSONObject objJson = new JSONObject();
 		JSONArray jsonArry = new JSONArray();
 		String json = null;
     	try {
     		Statement stmt = conn.createStatement();
-    		rs = stmt.executeQuery("SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE 'AC-%' AND UNIT_ADDRESS LIKE '"+paramItemsIndex+"%' ");
+    		rs = stmt.executeQuery("SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE '"+paramType+"-%' AND UNIT_ADDRESS LIKE '"+paramItemsIndex+"%' ");
     		
     		if(rs == null) {
     			System.out.println("is not data.");

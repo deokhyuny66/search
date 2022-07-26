@@ -142,7 +142,7 @@ public class revNgeocoder {
 		    
 		   //각 인덱스에 접근해서 값들 추가 한다.
 		   tmp.put("Meter", String.valueOf(Math.round(distanceMeter))); //소수점 반올림
-		   tmp.put("KiloMeter", String.format("%.2f",distanceKiloMeter)); //소수점 2재짜리 반올림
+		   tmp.put("KiloMeter", String.format("%.1f",distanceKiloMeter)); //소수점 2재짜리 반올림
 		   /*
 		     {"Meter":1629,"KiloMeter":"1.63","
 		     {"Meter":1629,"KiloMeter":"1.63","
