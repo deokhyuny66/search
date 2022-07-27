@@ -128,13 +128,16 @@ var latlong;
 var parama;
 
 function fNCall(param){
-	parama = "#"+param;
 	var geoSuccess = function(position) {
-	  startPos = position;
-	  latlong = startPos.coords.latitude + "," + startPos.coords.longitude + "," + parama;
+		startPos = position;
+		latlong = startPos.coords.latitude + "," + startPos.coords.longitude + "," + parama;
 	}  
 	navigator.geolocation.getCurrentPosition(geoSuccess);
-	
+	if(latlong == "" || latlong == null || typeof latlong == "undefined"){
+		console.log("init value.");
+		navigator.geolocation.getCurrentPosition(geoSuccess);
+	}
+	parama = "#"+param;
 	if(parama != "#prd-000"){
 		$(parama).ready(function(){
 			if(latlong == "" || latlong == null || typeof latlong == "undefined"){
