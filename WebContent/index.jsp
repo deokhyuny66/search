@@ -134,7 +134,6 @@ function fNCall(param){
 	}  
 	navigator.geolocation.getCurrentPosition(geoSuccess);
 	if(latlong == "" || latlong == null || typeof latlong == "undefined"){
-		console.log("init value.");
 		navigator.geolocation.getCurrentPosition(geoSuccess);
 	}
 	parama = "#"+param;
