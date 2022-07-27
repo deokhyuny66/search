@@ -85,7 +85,7 @@ public class revNgeocoder {
 	public static List<JSONObject> geoLocationCulcurate(String objListParam,double latitudeParam, double longitudeParam) throws ParseException{
 		List<JSONObject> geoLocationObjList = new ArrayList<JSONObject>();
 		JSONParser parser = new JSONParser();
-
+        //https://m.blog.naver.com/PostView.naver?isHttpsRedirect=true&blogId=occidere&logNo=220798632813 (List 담는거 참고 했던 링크)
 		//단순 String 형태이기 때문에 사용을 위해서 다시 JSONObject로 형변환 해줘야 한다.
 		JSONObject univ = (JSONObject)parser.parse(objListParam);
 		//System.out.println("JSONObject univ : " + univ.toJSONString());

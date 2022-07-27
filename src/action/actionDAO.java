@@ -97,7 +97,6 @@ public class actionDAO {
     	try {
     		Statement stmt = conn.createStatement();
     		rs = stmt.executeQuery("SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE '"+paramType+"-%' AND UNIT_ADDRESS LIKE '"+paramItemsIndex+"%' ");
-    		
     		if(rs == null) {
     			System.out.println("is not data.");
     		}else {

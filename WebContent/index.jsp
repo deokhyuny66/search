@@ -118,6 +118,9 @@
 		font-size: 12px;
 		box-shadow: 0 0 6px gray; 
 	}
+	.none-list {
+		font-family: 'IBM Plex Sans KR', sans-serif;\
+	}
 </style>
 <script>
 var startPos;
@@ -148,25 +151,37 @@ function fNCall(param){
 			    		$('#results *').remove();
 			    		res = res.replace(/\;/gi,'');
 		                let json = JSON.parse(res);
-		                let keys = Object.keys(json);
-			    		for(var i=0;i<keys.length;i++) {
-			    			let key = keys[i];
-			    			if(Number(json[key].Meter) > 1000){
-			    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
-				    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].KiloMeter+"<span style='font-size:8px;font-weight:700;'>km</span></div></div>"
-				    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
-				    					+ "<div id='address"+i+"' class='card-title text-white' onclick='copy3('address"+i+"')' style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");
-			    			}else {
-			    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
-				    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].Meter+"<span style='font-size:8px;font-weight:700;'>m</span></div></div>"
-				    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
-				    					+ "<div id='address"+i+"' class='card-title text-white' onclick='copy3('address"+i+"')' style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");	
-			    			}
-			    			
-			    		}
+		                if(json == "[]" || json == null || json == "undefined" || json == ""){
+		                	$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' style='justify-content: center;justify-items: center;text-align: center;align-items: center;width:120px;height:50px;margin:0 auto;vertical-align: middle;font-size:13px;font-weight:700;'>근처 자재상이<br>조회되지 않습니다.</div></div>");
+		                }else {
+		                	let keys = Object.keys(json);
+			                
+			                //Value 기준으로 정렬
+				    		for(var i=0;i<keys.length;i++) {
+				    			let key = keys[i];
+				    			json.sort(function(a,b){
+				    				if(a.Meter < b.Meter) return -1;
+				    				if(a.Meter > b.Meter) return 1;
+				    				
+				    				return 0;
+				    			});
+				    			
+			    				if(Number(json[key].Meter) > 1000){
+				    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
+					    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].KiloMeter+"<span style='font-size:8px;font-weight:700;'>km</span></div></div>"
+					    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
+					    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");
+				    			}else {
+				    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
+					    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].Meter+"<span style='font-size:8px;font-weight:700;'>m</span></div></div>"
+					    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
+					    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");	
+				    			}
+				    		}
+		                }
 			    	},
 			    	error: function(){
-			    		console.log("False");
+			    		console.log("false");
 			    	}
 			    });
 			  }

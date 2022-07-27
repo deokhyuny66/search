@@ -14,7 +14,8 @@ $(".swiper-slide").on('click',function(){
 			res = res.replace(/\;/gi,''); //[ ] 대괄호 넣어주니깐 구문 , 에러 안남. 즉, Json 형태로 맞춤 (  [{key:value}]   )
 			res = res.trim(); // 공백 제어
 			if(res == '[]'){
-				$('#results').html("준비 중입니다.").css("font-family","'Nanum Gothic Coding', monospace").css("font-size","16px").css("text-align","center");
+				//$('#results').html("준비 중입니다.").css("font-family","'Nanum Gothic Coding', monospace").css("font-size","13px").css("text-align","center");
+				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' style='justify-content: center;justify-items: center;text-align: center;align-items: center;width:120px;height:50px;margin:0 auto;vertical-align: middle;font-size:13px;font-weight:700;'>해당 자재상은<br>유지관리 중입니다.</div></div>");
 			}else {
 				$('#results').empty();
 				/* alert(typeof res === 'object'); // false */
@@ -25,7 +26,7 @@ $(".swiper-slide").on('click',function(){
 					json[key].UNIT_COMPANY 이렇게 값을 따로따로 출력 가능.
 				*/
 				let $temp;
-			     for (let i=0; i<keys.length; i++) {
+			     for (var i=0; i<keys.length; i++) {
 			    	let key = keys[i];
 			    	/* console.log("key : " + key + ", value : " + json[key].UNIT_COMPANY); */
 			    	$temp = $('#results').append('<div class="item card mb-3 bs-light"><div id="card-block" class="card-body"><div class="card-title text-white" style="margin:auto 0;line-height: 50px;">'
