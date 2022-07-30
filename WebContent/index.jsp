@@ -44,6 +44,9 @@
     
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Swiper/4.2.0/css/swiper.css">
     <link rel="stylesheet" href="https://unpkg.com/swiper/swiper-bundle.min.css">
+    <script src="https://code.jquery.com/jquery-1.12.4.js"></script>
+	<script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script>
+	<link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
 
 <style>
 	@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
@@ -121,75 +124,101 @@
 	.none-list {
 		font-family: 'IBM Plex Sans KR', sans-serif;\
 	}
+	.ui-tooltip {
+	    padding: 10px 20px;
+	    color: #fff;
+	    border-radius: 5px;
+	    background:#000;
+	}
+	
+	input[type=text] {height:30px;line-height:30px;border-radius:4px;border:1px solid #ddd;margin-top:10px;}
 </style>
 <script>
 var startPos;
 var latlong;
 var parama;
 
+$(function() {
+    $(".fa-exclamation-circle").tooltip();
+});
+
 function fNCall(param){
-	var geoSuccess = function(position) {
-		startPos = position;
-		latlong = startPos.coords.latitude + "," + startPos.coords.longitude + "," + parama;
-	}  
-	navigator.geolocation.getCurrentPosition(geoSuccess);
-	if(latlong == "" || latlong == null || typeof latlong == "undefined"){
-		navigator.geolocation.getCurrentPosition(geoSuccess);
+	if(!navigator.geolocation){
+		console.log("위치기반을 지원하지 않습니다.");
+	}else {
+		var options = {
+				  enableHighAccuracy: true,
+				  timeout: 5000,
+				  maximumAge: 0
+		};
+		
+		var geoSuccess = function(position) {
+			startPos = position;
+			latlong = startPos.coords.latitude + "," + startPos.coords.longitude + "," + parama;
+		}
+		function error(err) {
+			  console.warn("error");
+		}
+		navigator.geolocation.getCurrentPosition(geoSuccess,error,options);
+		if(latlong == "" || latlong == null || typeof latlong == "undefined"){
+			navigator.geolocation.getCurrentPosition(geoSuccess,error,options);
+		}
+		parama = "#"+param;
+		if(parama != "#prd-000"){
+			$(parama).ready(function(){
+				if(latlong == "" || latlong == null || typeof latlong == "undefined"){
+					console.log("init value.");
+				}else {
+			  	    $.ajax({
+				    	type: 'POST',
+				    	url: 'jeoAjax.jsp',
+				    	dataType: 'text',
+				    	data: {
+				    		"geolocation":latlong
+				    	},
+				    	success: function(res){
+				    		$('#results *').remove();
+				    		res = res.replace(/\;/gi,'');
+			                let json = JSON.parse(res);
+			                if(json == "[]" || json == null || json == "undefined" || json == ""){
+			                	$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' style='justify-content: center;justify-items: center;text-align: center;align-items: center;width:120px;height:50px;margin:0 auto;vertical-align: middle;font-size:13px;font-weight:700;'>근처 자재상이<br>조회되지 않습니다.</div></div>");
+			                }else {
+			                	let keys = Object.keys(json);
+				                
+				                //Value 기준으로 정렬
+					    		for(var i=0;i<keys.length;i++) {
+					    			let key = keys[i];
+					    			json.sort(function(a,b){
+					    				if(a.Meter < b.Meter) return -1;
+					    				if(a.Meter > b.Meter) return 1;
+					    				
+					    				return 0;
+					    			});
+					    			
+					    			if(Number(json[key].Meter < 10000)){
+					    				if(Number(json[key].Meter) > 1000){
+						    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
+							    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].KiloMeter+"<span style='font-size:8px;font-weight:700;'>km</span></div></div>"
+							    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
+							    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<div style='float:right;margin-top:14px;margin-right:5px;'><i class='fas fa-exclamation-circle' title='현재 위치기준으로 거리가 표시됩니다.' style='margin-right:0;cursor:pointer;' aria-hidden='true'></i></div></div></div></div>");
+						    			}else {
+						    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
+							    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].Meter+"<span style='font-size:8px;font-weight:700;'>m</span></div></div>"
+							    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
+							    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<div style='float:right;margin-top:14px;margin-right:5px;'><i class='fas fa-exclamation-circle' title='현재 위치기준으로 거리가 표시됩니다.' style='margin-right:0;cursor:pointer;' aria-hidden='true'></i></div></div></div></div>");	
+						    			}
+					    			}
+					    		}
+			                }
+				    	},
+				    	error: function(){
+				    		console.log("false");
+				    	}
+				    });
+				  }
+			  }); 
+		}
 	}
-	parama = "#"+param;
-	if(parama != "#prd-000"){
-		$(parama).ready(function(){
-			if(latlong == "" || latlong == null || typeof latlong == "undefined"){
-				console.log("init value.");
-			}else {
-		  	    $.ajax({
-			    	type: 'POST',
-			    	url: 'jeoAjax.jsp',
-			    	dataType: 'text',
-			    	data: {
-			    		"geolocation":latlong
-			    	},
-			    	success: function(res){
-			    		$('#results *').remove();
-			    		res = res.replace(/\;/gi,'');
-		                let json = JSON.parse(res);
-		                if(json == "[]" || json == null || json == "undefined" || json == ""){
-		                	$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' style='justify-content: center;justify-items: center;text-align: center;align-items: center;width:120px;height:50px;margin:0 auto;vertical-align: middle;font-size:13px;font-weight:700;'>근처 자재상이<br>조회되지 않습니다.</div></div>");
-		                }else {
-		                	let keys = Object.keys(json);
-			                
-			                //Value 기준으로 정렬
-				    		for(var i=0;i<keys.length;i++) {
-				    			let key = keys[i];
-				    			json.sort(function(a,b){
-				    				if(a.Meter < b.Meter) return -1;
-				    				if(a.Meter > b.Meter) return 1;
-				    				
-				    				return 0;
-				    			});
-				    			
-			    				if(Number(json[key].Meter) > 1000){
-				    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
-					    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].KiloMeter+"<span style='font-size:8px;font-weight:700;'>km</span></div></div>"
-					    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
-					    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");
-				    			}else {
-				    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
-					    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].Meter+"<span style='font-size:8px;font-weight:700;'>m</span></div></div>"
-					    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
-					    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<img src='./assets/img/contents-copy.png' style='width:20px;height:15px;'></div></div></div></div>");	
-				    			}
-				    		}
-		                }
-			    	},
-			    	error: function(){
-			    		console.log("false");
-			    	}
-			    });
-			  }
-		  }); 
-	}
-	
 }
 </script>
 </head>
@@ -230,7 +259,6 @@ function fNCall(param){
        <div id="results" class="col-md-6 col-lg-4">
         <% for (j=0;j<rs_dao_list.size();j++) {%>
            <div class="item card mb-3 bs-light">
-           	
 	             <div id="card-block" class="card-body"> 
 	                  	<div class="card-title text-white" style="margin:auto 0;line-height: 50px;">
 	                  		<img src="./assets/img/location.png" style="margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;">

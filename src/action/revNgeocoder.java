@@ -76,12 +76,12 @@ public class revNgeocoder {
 			GpsToAddress gps = new GpsToAddress(latitude, longitude);
 			String gpsAddr = gps.getAddress();
 			String[] gpsArray = gpsAddr.split(" ");
-			String gpsArrayCondition = gpsArray[1] + " " + gpsArray[2]; 
-	
+			String gpsArrayCondition = gpsArray[1];
+			//String gpsArrayCondition = gpsArray[1] + " " + gpsArray[2];
 			return gpsArrayCondition;
 	}
 	
-	@SuppressWarnings({ "unchecked" })
+
 	public static List<JSONObject> geoLocationCulcurate(String objListParam,double latitudeParam, double longitudeParam) throws ParseException{
 		List<JSONObject> geoLocationObjList = new ArrayList<JSONObject>();
 		JSONParser parser = new JSONParser();

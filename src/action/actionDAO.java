@@ -88,32 +88,37 @@ public class actionDAO {
     	return jsonObj;
     }
 	
-	@SuppressWarnings("unchecked")
+	@SuppressWarnings({ "unchecked" })
 	public String selectGeolocation(String paramItemsIndex, String paramType) throws SQLException {
-		ResultSet rs = null;
 		JSONObject objJson = new JSONObject();
 		JSONArray jsonArry = new JSONArray();
 		String json = null;
+		String itemsAdr = paramItemsIndex+ " %";
+		String types = paramType+'%';
+		String sql = "SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE '"+types+"' AND UNIT_ADDRESS LIKE '서울특별시%' ";
     	try {
     		Statement stmt = conn.createStatement();
-    		rs = stmt.executeQuery("SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE '"+paramType+"-%' AND UNIT_ADDRESS LIKE '"+paramItemsIndex+"%' ");
-    		if(rs == null) {
+    		ResultSet rs = stmt.executeQuery(sql);
+    		
+    		if(!rs.next()) {
     			System.out.println("is not data.");
     		}else {
     			ResultSetMetaData md = rs.getMetaData();
         		int columns = md.getColumnCount();
         		HashMap<String,String> row = new HashMap<String, String>(columns);
-        		while(rs.next()) {   			
+
+        		while(rs.next()) {
         			for(int i=1; i<=columns; ++i) {
     					if(md.getColumnName(i).equals("UNIT_ID")){
     						row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
     					}else {
-    						row.put(md.getColumnName(i), (String) rs.getObject(i));    	
+    						row.put(md.getColumnName(i), (String) rs.getObject(i));   
     					}
     					objJson = new JSONObject(row);
     				}
         			//JSONObject 값을 담아서 배열에 담기.
         			JSONObject[] objsa = new JSONObject[]{objJson};
+        			
         			for(int i=0;i<objsa.length;i++){
         				jsonArry.add(i, objsa[i]);
         			}
@@ -129,7 +134,6 @@ public class actionDAO {
     		}
     		JSONObject univ = new JSONObject();
     		univ.put("univ", jsonArry);
-			//System.out.println("JSONObject univ : " + univ);
 			/*
 			 	JSONObject univ : {"univ":[{"UNIT_LINK":"null","UNIT_ID":"399",""},{"UNIT_LINK":"null","UNIT_ID":"398","....
 			 */
