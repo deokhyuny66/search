@@ -117,7 +117,6 @@ public class actionDAO {
         			for(int i=1; i<=columns; i++) {
     					if(md.getColumnName(i).equals("UNIT_ID")){
     						row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
-    						System.out.println(rs.getObject(i));
     					}else {
     						row.put(md.getColumnName(i), (String) rs.getObject(i));
     					}
