@@ -37,7 +37,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="./assets/css/core3.css" />
+    <link rel="stylesheet" href="./assets/css/core5.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
@@ -53,12 +53,12 @@
 	@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+KR&display=swap');
 	
     .swiper-container {
-    	position: absolute;
+     	position: absolute; 
         width: 100%;
         height: 30px;
         top: 50px;
         padding-top: 8px;
-        padding-bottom: 8px;
+        padding-bottom: 50px;
     }
     .swiper-slide {
     	cursor: pointer;
@@ -125,7 +125,71 @@
 	.none-list {
 		font-family: 'IBM Plex Sans KR', sans-serif;
 	}
-
+	
+    /* 배너 컨테이너 */
+    .rollingbanner{
+        position: relative;
+        height: 32px;
+        font-size: .875rem;
+		letter-spacing: -1px;
+        padding: 7px 15px;
+        box-sizing: border-box;
+        background-color: #f0f0f0;
+        border-radius: 5px;
+        margin-bottom: 8px;
+        font-family: 'IBM Plex Sans KR', sans-serif;
+    }
+    /* 타이틀 */
+    .rollingbanner > .title{
+        font-weight: bold;
+        float: left;
+        padding-right: 10px;
+    }
+    /* 롤링 배너 */
+    .rollingbanner > .wrap{
+        position: relative;
+        width: auto;
+        height: 100%;
+        box-sizing: border-box;
+        overflow: hidden;
+    }        
+    .rollingbanner ul{
+        list-style: none;
+    }
+    .rollingbanner li{
+        position: absolute;
+        top: -36px;
+        left: 0;
+    }
+    /* 이전, 현재, 다음 롤링 배너 표시 */
+    .rollingbanner li.prev{
+        top: 36px;
+        transition: top 0.5s ease;
+    }
+    .rollingbanner li.current{
+        top: 0;
+        transition: top 0.5s ease;
+    }
+    .rollingbanner li.next{
+        top: -36px;
+    }
+    .rollingbanner a{
+        display: block;
+        display: -webkit-box;
+        text-decoration: none;
+        -webkit-line-clamp: 1;
+        -webkit-box-orient:vertical;
+        overflow: hidden;
+        color: #000;
+    }
+    /* 반대 방향으로 진행 */
+    .rollingbanner.reverse li.prev{
+        top: -36px;
+        transition: top 0.5s ease;
+    }
+    .rollingbanner.reverse li.next{
+        top: 36px;
+    }
 </style>
 <script>
 var startPos;
@@ -228,6 +292,34 @@ function fNCall(param){
 		}
 	}
 }
+
+
+//롤링 배너
+document.addEventListener('DOMContentLoaded', function(){
+    var interval = window.setInterval(rollingCallback, 3000);
+});
+
+function rollingCallback(){
+    //.prev 클래스 삭제
+    document.querySelector('.rollingbanner .prev').classList.remove('prev');
+
+    //.current -> .prev
+    var current = document.querySelector('.rollingbanner .current');
+    current.classList.remove('current');
+    current.classList.add('prev');
+
+    //.next -> .current
+    var next = document.querySelector('.rollingbanner .next');
+    //다음 목록 요소가 널인지 체크
+    if(next.nextElementSibling == null){
+        document.querySelector('.rollingbanner ul li:first-child').classList.add('next');
+    }else{
+        //목록 처음 요소를 다음 요소로 선택
+        next.nextElementSibling.classList.add('next');
+    }
+    next.classList.remove('next');
+    next.classList.add('current');
+}
 </script>
 </head>
 <body>
@@ -239,13 +331,27 @@ function fNCall(param){
 	<div id="continput">
 		<a class="back-to-top fas fa-angle-up"></a>
 		<div id="input-group">
-			<input type="text" id="searchtext" class="searchInput">
+			<input type="text" id="searchtext" class="searchInput" placeholder="가까운 자재상은?">
 			<button id="icon-src"><i class="fas fa-search"></i></button>
 		</div>
 	</div>
 	
 	<div class="row mb-5">
 	    <div class="swiper-container">
+	     <!-- 롤링 배너 -->
+	        <div class="rollingbanner">
+		    	<div class="title">[공지]</div>
+		    		<div class="wrap">
+		       	 	<ul>
+			            <li><a href="#">내 위치의 가까운 자재상 자동 조회 기능 추가</a></li>
+			            <li class="next"><a href="#">내 위치의 가까운 자재상 자동 조회 기능 추가</a></li>
+			            <li class="current"><a href="#">'냉동기,에어컨' 항목 클릭 시 가까운 자재상 자동 조회</a></li>
+			            <li><a href="#">자재상 정보 등록,수정 문의는 1577-1817</a></li>
+			            <li class="prev"><a href="#">'냉동기,에어컨' 항목 클릭 시 가까운 자재상 자동 조회</a></li>
+		        	</ul>
+		    	</div>
+			</div>
+	    
 	        <div class="swiper-wrapper">
 	        	<div id="prd-000" class="swiper-slide" style="background-color: #CC95C0;" onclick="fNCall('ALL');">전체</div>
 	            <div id="prd-001" class="swiper-slide" style="background-color: #FFC837;" onclick="fNCall('FC');">냉동기</div>
@@ -261,9 +367,12 @@ function fNCall(param){
 	            <div id="prd-010" class="swiper-slide" style="background-color: #EDDE5D;">열교환기</div>
 	            <!-- <div id="prd-013" class="swiper-slide" style="background-color: #5FC3E4;">냉장냉동</div> -->
 	        </div>
+	        
+	       
 	    </div>
-	
-
+		
+		
+	    
        <div id="results" class="col-md-6 col-lg-4">
         <% for (j=0;j<rs_dao_list.size();j++) {%>
            <div class="item card mb-3 bs-light">
