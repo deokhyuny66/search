@@ -122,25 +122,14 @@
 		box-shadow: 0 0 6px gray; 
 	}
 	.none-list {
-		font-family: 'IBM Plex Sans KR', sans-serif;\
+		font-family: 'IBM Plex Sans KR', sans-serif;
 	}
-	.ui-tooltip {
-	    padding: 10px 20px;
-	    color: #fff;
-	    border-radius: 5px;
-	    background:#000;
-	}
-	
-	input[type=text] {height:30px;line-height:30px;border-radius:4px;border:1px solid #ddd;margin-top:10px;}
+
 </style>
 <script>
 var startPos;
 var latlong;
 var parama;
-
-$(function() {
-    $(".fa-exclamation-circle").tooltip();
-});
 
 function fNCall(param){
 	if(!navigator.geolocation){
@@ -200,12 +189,12 @@ function fNCall(param){
 						    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
 							    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].KiloMeter+"<span style='font-size:8px;font-weight:700;'>km</span></div></div>"
 							    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
-							    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<div style='float:right;margin-top:14px;margin-right:5px;'><i class='fas fa-exclamation-circle' title='현재 위치기준으로 거리가 표시됩니다.' style='margin-right:0;cursor:pointer;' aria-hidden='true'></i></div></div></div></div>");
+							    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"</div></div></div>");
 						    			}else {
 						    				$temp = $('#results').append("<div class='item card mb-3 bs-light'><div id='card-block' class='card-body'> <div class='card-title text-white' style='margin:auto 0;line-height: 50px;'>"
 							    					+ "<img src='./assets/img/location.png' style='margin-bottom: 5px;cursor: pointer;max-width:80px; width:80%; height:auto;'><div class='swiper-slide' style='background-color:" + json[key].UNIT_COLOR + ";width: 50px;height: 15px;font-size: 10px;margin:0 auto;'>"+json[key].UNIT_LOGO+"</div><div class='swiper-slide-location'>"+json[key].Meter+"<span style='font-size:8px;font-weight:700;'>m</span></div></div>"
 							    					+ "<div class='card-sub-block'><div class='card-title text-white'>"+json[key].UNIT_COMPANY+"<img src='./assets/img/phone-connection.png' onclick=document.location.href=tel:'"+json[key].UNIT_PHONE+"' style='float:right;cursor: pointer;max-width:25px; width:40%; height:auto;box-shadow:0 0 4px gray;'></div>"
-							    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"<div style='float:right;margin-top:14px;margin-right:5px;'><i class='fas fa-exclamation-circle' title='현재 위치기준으로 거리가 표시됩니다.' style='margin-right:0;cursor:pointer;' aria-hidden='true'></i></div></div></div></div>");	
+							    					+ "<div id='address"+i+"' class='card-title text-white' onclick=copy3('address"+i+"') style='cursor: pointer;padding-top:10px;'>"+json[key].UNIT_ADDRESS+"</div></div></div>");	
 						    			}
 					    			}
 					    		}

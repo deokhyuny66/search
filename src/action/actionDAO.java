@@ -31,7 +31,7 @@ public class actionDAO {
     	try {
     		Statement stmt = conn.createStatement();
 			//ResultSet rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_YN = 'Y' ORDER BY RAND()");
-    		ResultSet rs = stmt.executeQuery("select * from TB_INTEGRATION ORDER BY RAND()");
+    		ResultSet rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_YN='Y' ORDER BY RAND()");
     		ResultSetMetaData md = rs.getMetaData();
     		int columns = md.getColumnCount();
 
@@ -58,9 +58,9 @@ public class actionDAO {
     	try {
     		Statement stmt = conn.createStatement();
     		if(paramItemsIndex.equals("prd-000")) {
-    			rs = stmt.executeQuery("select * from TB_INTEGRATION ORDER BY RAND()");
+    			rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_YN='Y' ORDER BY RAND()");
     		}else if(paramItemsIndex.equals("prd-001") || paramItemsIndex.equals("prd-002")){
-    			rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_PRD_TYPE='"+paramItemsIndex+"' ORDER BY RAND()");
+    			rs = stmt.executeQuery("select * from TB_INTEGRATION WHERE UNIT_PRD_TYPE='"+paramItemsIndex+"' AND UNIT_YN='Y' ORDER BY RAND()");
     		}
     		
     		if(rs == null) {
@@ -93,26 +93,33 @@ public class actionDAO {
 		JSONObject objJson = new JSONObject();
 		JSONArray jsonArry = new JSONArray();
 		String json = null;
-		String itemsAdr = paramItemsIndex+ " %";
+		String itemsAdr = paramItemsIndex+ "%";
 		String types = paramType+'%';
-		String sql = "SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE '"+types+"' AND UNIT_ADDRESS LIKE '서울특별시%' ";
+		String sql = "SELECT * FROM TB_INTEGRATION WHERE UNIT_TYPE LIKE '"+types+"' AND UNIT_ADDRESS LIKE '"+itemsAdr+"' AND UNIT_YN='Y'";
+
     	try {
     		Statement stmt = conn.createStatement();
     		ResultSet rs = stmt.executeQuery(sql);
+    
+    		/*
+    		문제 : 아래처럼 rs.next()로 한번 실행으로 2번째 값부터 가져오게 됌..  
+    		if(!rs.nex()) {}
+    		else {}
     		
-    		if(!rs.next()) {
-    			System.out.println("is not data.");
-    		}else {
-    			ResultSetMetaData md = rs.getMetaData();
-        		int columns = md.getColumnCount();
-        		HashMap<String,String> row = new HashMap<String, String>(columns);
-
-        		while(rs.next()) {
-        			for(int i=1; i<=columns; ++i) {
+    		해결 : 아래처럼 do ~ while()로 변경
+    		*/
+    		if(rs.next()) {
+    			do{
+    				ResultSetMetaData md = rs.getMetaData();
+            		int columns = md.getColumnCount();
+            		HashMap<String,String> row = new HashMap<String, String>(columns);
+            		//JSONObject 형태로 저장하기 위하여 반복문을 다시 돌림.
+        			for(int i=1; i<=columns; i++) {
     					if(md.getColumnName(i).equals("UNIT_ID")){
     						row.put(md.getColumnName(i), String.valueOf(rs.getObject(i)));
+    						System.out.println(rs.getObject(i));
     					}else {
-    						row.put(md.getColumnName(i), (String) rs.getObject(i));   
+    						row.put(md.getColumnName(i), (String) rs.getObject(i));
     					}
     					objJson = new JSONObject(row);
     				}
@@ -130,8 +137,11 @@ public class actionDAO {
 					 jsonArry : [{"UNIT_LINK":"null","UNIT_ID":"398","...
 					 jsonArry : [{"UNIT_LINK":"null","UNIT_ID":"399","...
         			 */
-        		}
+    			}while(rs.next());
+    		}else {
+    			System.out.println("is not data.");
     		}
+    		
     		JSONObject univ = new JSONObject();
     		univ.put("univ", jsonArry);
 			/*
