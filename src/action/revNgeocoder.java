@@ -15,29 +15,20 @@ import org.json.simple.JSONValue;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
-/*import com.google.code.geocoder.Geocoder;
-import com.google.code.geocoder.GeocoderRequestBuilder;
-import java.io.IOException;
-import java.util.Map;
-import com.google.code.geocoder.model.GeocodeResponse;
-import com.google.code.geocoder.model.GeocoderRequest;
-import com.google.code.geocoder.model.GeocoderResult;
-import com.google.code.geocoder.model.GeocoderStatus;
-import com.google.code.geocoder.model.LatLng;
-*/
-
 class GpsToAddress {
 	
 	double latitude;
 	double longitude;
 	String regionAddress;
 
+	//현재 좌표 값 저장
 	public GpsToAddress(double latitude, double longitude) throws Exception {
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.regionAddress = getRegionAddress(getJSONData(getApiAddress()));
 	}
 	
+	//구글 API 키 등록 및 현재 좌표로 URL 가져오기
 	private String getApiAddress() {
 		String apiURL = "https://maps.googleapis.com/maps/api/geocode/json?latlng="
 				+ latitude + "," + longitude + "&language=ko&"+ "key=AIzaSyCi6weqlyOlMJWQcAvel4wcWAoxFaK2TSE";
@@ -71,9 +62,13 @@ class GpsToAddress {
 
 public class revNgeocoder {
 	public static String call(double latitudeParam, double longitudeParam) throws Exception{
+			//나의 현재 위,경도를 가져옴.
 			double latitude = latitudeParam; 
-			double longitude = longitudeParam; 
+			double longitude = longitudeParam;
+			
+			//현재 위경도 기준을 나의 주소로 변경
 			GpsToAddress gps = new GpsToAddress(latitude, longitude);
+			
 			String gpsAddr = gps.getAddress();
 			String[] gpsArray = gpsAddr.split(" ");
 			String gpsArrayCondition = gpsArray[1];
@@ -91,17 +86,20 @@ public class revNgeocoder {
 		//System.out.println("JSONObject univ : " + univ.toJSONString());
 		/*
 		  JSONObject univ : {"univ":[{"UNIT_LONGITUDE":"127.122234345712","....
-		 */
+		*/
 		
-		//JSONObject 각 인덱스에 접근 해주기 위해서는 JSON배열 형태로 다시 형변환 해준다. 
+		//----------------------------------------------------------------------------------------
+		//JSONObject 각 인덱스에 접근 해주기 위해서는 JSON 배열 형태로 다시 형변환 해준다. 
 		JSONArray arr = (JSONArray)univ.get("univ");
 		//System.out.println("JSONArray arr : " + arr.toJSONString());
 		/*
 		 JSONArray arr : [{"UNIT_LONGITUDE":"127.122234345712","... 
-		 */
+		*/
+		//----------------------------------------------------------------------------------------
 		
+		//----------------------------------------------------------------------------------------
 		//[중요]※※※※※새로운 JSONObject에 다시 담아서 처리하기 위해 선언※※※※※※※
-		//새로운곳에 담지 않고 기존에 사용했던거에 담으려고 하면 중복으로 쌓이게 되고, 문제있었음...
+		//새로운곳에 담지 않고 기존에 사용했던거에 담으려고 하면 중복으로 쌓이게 되고, 문제 있었음...
 		JSONObject tmp = new JSONObject();
 		/*
 		  [참고] 
@@ -114,6 +112,7 @@ public class revNgeocoder {
 		 * Object 각 인덱스를 꺼내서, DB에서 가져와서 거리 계산한 위경도의 각각의 값을 각 인덱스 별로 넣는 것이 목표다.
 		 * 근데, JSON 파싱하는게 잘 안됐음......
 		 */
+		
 		//꺼내기 위한 반복문 선언
 		for(int i=0;i<arr.size();i++){
 			//System.out.println("for arr : " + arr.get(i));
@@ -131,7 +130,10 @@ public class revNgeocoder {
 			 	"for arr" 결과와 똑같음.
 			 	-> 이 상태 일 때야말로 각 인덱스에 접근해서 데이터를 추가할 수 있는 상태가 된거임.
 			 */
+
+			//----------------------------------------------------------------------------------------
 			
+			//현재 위경도 좌표기준으로 중심을 잡고, 비교 좌표랑 계산해서 거리를 측정(M, KiloM) 
 			double distanceMeter =
 			        distance(latitudeParam, longitudeParam, Double.parseDouble((String)tmp.get("UNIT_LATITUDE")), 
 			        		Double.parseDouble((String)tmp.get("UNIT_LONGITUDE")), "meter");
@@ -159,6 +161,7 @@ public class revNgeocoder {
 		return geoLocationObjList;
 	}
          
+	// 중심을 기준으로 현재 좌표 및 대상 좌표를 비교하여 거리 계산.
 	private static double distance(double lat1, double lon1, double lat2, double lon2, String unit) {
         double theta = lon1 - lon2;
         double dist = Math.sin(deg2rad(lat1)) * Math.sin(deg2rad(lat2)) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.cos(deg2rad(theta));

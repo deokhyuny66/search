@@ -113,6 +113,7 @@ public class actionDAO {
     				ResultSetMetaData md = rs.getMetaData();
             		int columns = md.getColumnCount();
             		HashMap<String,String> row = new HashMap<String, String>(columns);
+
             		//JSONObject 형태로 저장하기 위하여 반복문을 다시 돌림.
         			for(int i=1; i<=columns; i++) {
     					if(md.getColumnName(i).equals("UNIT_ID")){
@@ -122,6 +123,7 @@ public class actionDAO {
     					}
     					objJson = new JSONObject(row);
     				}
+        			
         			//JSONObject 값을 담아서 배열에 담기.
         			JSONObject[] objsa = new JSONObject[]{objJson};
         			
@@ -141,14 +143,14 @@ public class actionDAO {
     			System.out.println("is not data.");
     		}
     		
+    		//Json배열을 다시 JsonObject에 담아서 이름을 "Univ"라고 지정해서 만듬.
     		JSONObject univ = new JSONObject();
     		univ.put("univ", jsonArry);
 			/*
 			 	JSONObject univ : {"univ":[{"UNIT_LINK":"null","UNIT_ID":"399",""},{"UNIT_LINK":"null","UNIT_ID":"398","....
 			 */
 	
-			//문자열로 만들어서 전달한다. JSONObject로 보내려고 하니깐 연속적으로 담지 못하고, 마지막번쨰 값만 전달되는 문제가 있었음....
-    		
+			//toString()문자열로 만들어서 전달한다. ㅁ JSONObject로 보내려고 하니깐 연속적으로 담지 못하고, 마지막(last)번쨰 값만 전달되는 문제가 있었음....
     		json = univ.toJSONString();
     		
     	} catch (Exception e) {
