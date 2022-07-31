@@ -9,7 +9,7 @@
 <%
 	//ajax 전달 값 받음.
 	String latlong = request.getParameter("geolocation");
-
+	String typeGubun = request.getParameter("typeGubun");
 	actionDAO dao = new actionDAO();
 	actionDTO dto = new actionDTO();
 	String[] latlongArry = latlong.split(",");
@@ -17,14 +17,6 @@
 	List<JSONObject> objNList = new ArrayList<JSONObject>();
 	
 	//항목별에 따라 구분자 추가
-	if(latlongArry[2].equals("#prd-000")){
-		dto.setTypeGubun("ALL");
-	}else if(latlongArry[2].equals("#prd-001")){
-		dto.setTypeGubun("FC");
-	}else if(latlongArry[2].equals("#prd-002")){
-		dto.setTypeGubun("AC");
-	}
-	
 	if(latlong == null){
 		System.out.println("init");
 	}else {
@@ -36,7 +28,7 @@
 		gpsArrayCondition = revNgeocoder.call(dto.getLatitude(),dto.getLongitude());
 		
 		//주소 및 구분자로 해당하는 업체 list DB 조회해서 Json 문자열 형태로 가져옴.
-		String json = dao.selectGeolocation(gpsArrayCondition, dto.getTypeGubun());
+		String json = dao.selectGeolocation(gpsArrayCondition, typeGubun);
 		
 		//조건에 맞는 업체의 위경도를 전달하고 거리를 계산하여 리스트로 반환.
 		objNList = revNgeocoder.geoLocationCulcurate(json,dto.getLatitude(),dto.getLongitude());
