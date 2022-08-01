@@ -37,7 +37,7 @@
     <!-- Fonts -->
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link rel="stylesheet" href="./assets/css/core5.css" />
+    <link rel="stylesheet" href="./assets/css/core2.css" />
     <link
       href="https://fonts.googleapis.com/css2?family=Public+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,300;1,400;1,500;1,600;1,700&display=swap"
       rel="stylesheet"
@@ -58,7 +58,7 @@
         height: 30px;
         top: 50px;
         padding-top: 8px;
-        padding-bottom: 50px;
+        padding-bottom: 90px;
     }
     .swiper-slide {
     	cursor: pointer;
@@ -129,14 +129,14 @@
     /* 배너 컨테이너 */
     .rollingbanner{
         position: relative;
-        height: 32px;
+        height: 72px;
         font-size: .875rem;
 		letter-spacing: -1px;
         padding: 7px 15px;
         box-sizing: border-box;
-        background-color: #f0f0f0;
+        background-color: rgb(49,67,91); 
         border-radius: 5px;
-        margin-bottom: 8px;
+        margin-bottom: 7px;
         font-family: 'IBM Plex Sans KR', sans-serif;
     }
     /* 타이틀 */
@@ -180,7 +180,7 @@
         -webkit-line-clamp: 1;
         -webkit-box-orient:vertical;
         overflow: hidden;
-        color: #000;
+        color: rgb(253,255,252);
     }
     /* 반대 방향으로 진행 */
     .rollingbanner.reverse li.prev{
@@ -340,14 +340,14 @@ function rollingCallback(){
 	    <div class="swiper-container">
 	     <!-- 롤링 배너 -->
 	        <div class="rollingbanner">
-		    	<div class="title">[공지]</div>
+		    	<div class="title"><img src="./assets/img/banner.png" style="width:42px;height:55px;"></div>
 		    		<div class="wrap">
 		       	 	<ul>
-			            <li><a href="#">내 위치의 가까운 자재상 자동 조회 기능 추가</a></li>
-			            <li class="next"><a href="#">내 위치의 가까운 자재상 자동 조회 기능 추가</a></li>
-			            <li class="current"><a href="#">'냉동기,에어컨' 항목 클릭 시 가까운 자재상 자동 조회</a></li>
-			            <li><a href="#">자재상 정보 등록,수정 문의는 1577-1817</a></li>
-			            <li class="prev"><a href="#">'냉동기,에어컨' 항목 클릭 시 가까운 자재상 자동 조회</a></li>
+			            <li class="current"><a href="#">📍 현재 가까운 자재상 조회 기능 UPDATE♬</a></li>
+			            <li class="prev"><a href="#">📍 10Km 내의 가까운 자재상이 검색 됩니다.</a></li>
+			            <li><a href="#">📍 '냉동기, 에어컨' 항목 클릭 시 자동 조회 됩니다.</a></li>
+			            <li class="next"><a href="#">🏪 쿨리닉 플레이스와 함께할 자재상 상시 모집 중！</a></li>
+			            <li><a href="#">📨 자재상 정보 등록/수정 문의 → 1577-1817</a></li> 
 		        	</ul>
 		    	</div>
 			</div>
