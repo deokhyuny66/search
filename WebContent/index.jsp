@@ -344,9 +344,8 @@ function rollingCallback(){
 		    	<div class="title"><img src="./assets/img/banner.png" style="width:32px;height:45px;padding:5px;"></div>
 		    		<div class="wrap">r
 		       	 	<ul>
-			            <li class="current"><a href="#">내 현재 위치에서 제일 가까운<br><span style="font-size:18px;color:rgb(236,206,76);"><u><b>자재상을 한눈에</u>&nbsp;</span>
-			                     <span style="font-size:18px;">살펴보자!</span></b></a></li>
-			            <li class="prev"><a href="#"><span style="font-size:18px;color:rgb(236,206,76);"><u><b>10Km 내</u></span> <span style="font-size:18px;">자재상을 기준으로,</b></span><br>자동으로 조회하여 보여줘요 :)</a></li>
+			            <li class="current"><a href="#">현재 위치에서 제일 가까운<br><span style="font-size:18px;color:rgb(236,206,76);"><u><b>자재상을 한눈에</u>&nbsp;</span><span style="font-size:18px;">살펴보자:)</span></b></a></li>
+			            <li class="prev"><a href="#"><span style="font-size:18px;color:rgb(236,206,76);"><u><b>10Km 내</u></span><span style="font-size:18px;">자재상을 기준으로,</b></span><br>자동으로 조회하여 보여줘요 :)</a></li>
 			            <li><a href="#"><span style="font-size:18px;color:rgb(236,206,76);"><u><b>냉동기, 에어컨 항목을</u></span>&nbsp;<span style="font-size:18px;"> 클릭하여,</span></b><br>가까운 자재상을 확인하실 수 있어요 :)</a></li>
 			            <li class="next"><a href="#">쿨리닉 플레이스와 함께할<br><b><span style="font-size:18px;">전국 자재상을</span> <span style="font-size:18px;color:rgb(236,206,76);"><u>상시 모집 중</u></span><span style="font-size:18px;"> 이에요 :)</span></b></a></li>
 			            <li><a href="#">자재상 신규 등록 및 수정 문의는<br><b><span style="font-size:18px;color:rgb(236,206,76);"><u>1577-1817로</u></span> <span style="font-size:18px;">연락 주세요 :)</span></b></a></li> 
