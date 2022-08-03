@@ -3,6 +3,8 @@ var latlong;
 
 /* 항목 버튼 클릭 시 호출 */
 function fNCall(param){
+	
+	
 	//위치기반 지원 여부 확인
 	if(!navigator.geolocation){
 		console.log("위치기반을 지원하지 않습니다.");
